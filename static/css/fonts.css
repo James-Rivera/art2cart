@@ -1,0 +1,63 @@
+/* Inter, Poppins, Karla, and Satoshi Font Family */
+
+/* Inter: weights 100-900 + italics for all weights */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Poppins: weights 100-900 (no italics) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Karla: weights 200-800 + italics 200-800 */
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+/* Satoshi: weights 300,400,500,700,900 (no italics) */
+@import url('https://fonts.googleapis.com/css2?family=Satoshi:wght@300;400;500;700;900&display=swap');
+
+/* Font Variables */
+:root {
+    --font-inter: 'Inter', sans-serif;
+    --font-poppins: 'Poppins', sans-serif;
+    --font-karla: 'Karla', sans-serif;
+    --font-satoshi: 'Satoshi', sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+}
+
+/* Font Classes */
+.font-inter {
+    font-family: var(--font-inter);
+}
+
+.font-poppins {
+    font-family: var(--font-poppins);
+}
+
+.font-karla {
+    font-family: var(--font-karla);
+}
+
+.font-karla-italic {
+    font-family: var(--font-karla-italic);
+    font-style: italic;
+}
+
+.font-satoshi {
+    font-family: var(--font-satoshi);
+}
+
+.font-medium {
+    font-weight: var(--font-weight-medium);
+}
+
+.font-regular {
+    font-weight: var(--font-weight-regular);
+}
+
+.font-semibold {
+    font-weight: var(--font-weight-semibold);
+}
+
+.font-bold {
+    font-weight: var(--font-weight-bold);
+}

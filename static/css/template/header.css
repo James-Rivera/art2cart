@@ -1,0 +1,485 @@
+/* Header */
+.header-bar {
+  /* Base styles */
+  padding: 18px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: background-color, box-shadow;
+}
+
+/* Colored state - default state */
+.header-bar,
+.header-colored {
+  background-color: var(--primary-2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Transparent state */
+.header-transparent {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Text colors for colored state */
+.header-bar,
+.header-colored .paintings,
+.header-colored .sculpture-copy-2,
+.header-colored .artists,
+.header-colored .cultured-kid-span {
+  color: var(--neutral-1);
+}
+
+/* Text colors for transparent state */
+.header-transparent .paintings,
+.header-transparent .sculpture-copy-2,
+.header-transparent .artists,
+.header-transparent .cultured-kid-span {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.header-transparent .cultured-kid-span3 {
+  color: var(--accent-1, #ffd700);
+}
+
+.header-transparent .s-ell-products {
+  color: black;
+  background: var(--accent-1, #ffd700);
+}
+
+/* Icon adjustments for transparent header */
+.header-transparent .account_icon,
+.header-transparent .group-124 {
+  filter: brightness(0) invert(1);  /* Make icons white */
+}
+
+.logo2 {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.logo-option-1 {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 2;
+  position: relative;
+  overflow: visible;
+}
+
+.web-logo {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  position: relative;
+}
+
+.cultured-kid {
+  text-align: left;
+  font-family: var(--font-karla);
+  font-weight: var(--font-weight-medium);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+  font-style: var(--font-style-italic, italic);
+  text-transform: lowercase;
+  position: relative;
+}
+
+.cultured-kid-span {
+  color: var(--neutral-1, #ffffff);
+}
+
+.cultured-kid-span2 {
+  color: var(--black, #161412);
+}
+
+.cultured-kid-span3 {
+  color: var(--accent-1, #ffd700);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+}
+
+.stacked-group {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 0;
+  padding: 0 7px;
+  list-style: none;
+}
+
+.paintings {
+  color: var(--neutral-1, #ffffff);
+  text-align: left;
+  font-family: var(--font-karla, 'Karla', sans-serif);
+  font-size: 14px;
+  line-height: 28px;
+  letter-spacing: 0.88px;
+  font-weight: 400;
+  text-transform: uppercase;
+  position: relative;
+  width: 76.84px;
+  text-decoration: none;
+}
+
+/* Navigation links transitions */
+.paintings,
+.sculpture-copy-2,
+.artists {
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.sculpture-copy-2 {
+  color: var(--neutral-1, #ffffff);
+  text-align: left;
+  font-family: var(--font-karla, 'Karla', sans-serif);
+  font-size: 14px;
+  line-height: 28px;
+  letter-spacing: 0.88px;
+  font-weight: 400;
+  text-transform: uppercase;
+  position: relative;
+  width: 73.89px;
+  text-decoration: none;
+}
+
+.artists {
+  color: var(--neutral-1, #ffffff);
+  text-align: left;
+  font-family: var(--font-karla, 'Karla', sans-serif);
+  font-size: 14px;
+  line-height: 28px;
+  letter-spacing: 0.88px;
+  font-weight: 400;
+  text-transform: uppercase;
+  position: relative;
+  width: 48.27px;
+  text-decoration: none;
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.account_icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  overflow: visible;
+}
+
+.group-124 {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+}
+
+.button2 {
+  background: var(--accent-1, #ffd700);
+  border-radius: 10px;
+  padding: 3px 12px 3px 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 35px;
+  position: relative;
+  text-decoration: none;
+}
+
+/* Logo and button transitions */
+.logo2,
+.button2,
+.account-wrapper {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.s-ell-products {
+  color: #000000;
+  text-align: left;
+  font-family: var(--font-karla, 'Karla', sans-serif);
+  font-size: 14px;
+  line-height: 28px;
+  letter-spacing: 0.88px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.account-wrapper {
+  position: relative;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.account-wrapper[role="button"] {
+  cursor: pointer;
+}
+
+.account-wrapper[role="button"] .account_icon {
+  cursor: pointer;
+}
+
+.account-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: none;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.account-dropdown.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* User Profile Section */
+.user-profile {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-weight: bold;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 200px; /* Control the width of the info container */
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.user-name {
+    font-family: var(--font-karla);
+    font-weight: 600;
+    font-size: 16px;
+    color: #000;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-email {
+    font-family: var(--font-karla);
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-role {
+  font-family: var(--font-karla);
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-divider {
+  margin: 8px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+/* Hover effects for transparent header */
+.header-transparent .paintings:hover,
+.header-transparent .sculpture-copy-2:hover,
+.header-transparent .artists:hover {
+  opacity: 0.9;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover effects for colored header */
+.header-colored .paintings:hover,
+.header-colored .sculpture-copy-2:hover,
+.header-colored .artists:hover {
+  opacity: 0.8;
+}
+
+/* Account icon and button adjustments */
+.account-wrapper {
+  padding: 8px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.header-transparent .account-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-colored .account-wrapper:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.cart-count{
+  color: var(--accent-1, #000);
+  font-family: var(--font-karla, 'Karla', sans-serif);
+  text-decoration: none;
+}
+
+
+/* Cart icon and badge styling */
+.cart-wrapper {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--accent-1, #ffd700);
+  color: var(--neutral-1, #000);
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--primary-2);
+  transition: all 0.3s ease;
+}
+
+.cart-badge.hidden {
+  display: none;
+}
+
+/* Badge color adjustments for transparent header */
+.header-transparent .cart-badge {
+  background: var(--accent-1, #ffd700);
+  color: var(--neutral-1, #000);
+  border-color: transparent;
+}
+
+/* Badge color adjustments for colored header */
+.header-colored .cart-badge {
+  background: var(--accent-1, #ffd700);
+  color: var(--neutral-1, #000);
+  border-color: var(--primary-2);
+}
+
+/* Animation for badge updates */
+@keyframes badgePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cart-badge.updated {
+  animation: badgePulse 0.3s ease-in-out;
+}
+
+/* Cart icon hover effects */
+.cart-wrapper:hover .group-124 {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.cart-wrapper:hover .cart-badge {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

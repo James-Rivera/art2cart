@@ -1,0 +1,276 @@
+/* Artists Section Styles */
+.artists-section {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Optional: Add an overlay to ensure text remains readable */
+.artists-section::before {
+  content: '';
+  position: absolute;
+  opacity: 0.80;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../static/images/Artist.png');  /* Using one of your existing images */
+  /*background-color: rgba(255, 217, 0, 0.589); /* Golden overlay */
+  z-index: 1;
+}
+
+/* Ensure content stays above the overlay */
+.artists-section > * {
+  position: relative;
+  z-index: 2;
+}
+
+.artists-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  text-align: left;
+}
+
+/* Left Side - Text Content */
+.artists-header {
+  flex: 1;
+  max-width: 422px;
+  padding-top: 0;
+  text-align: left;
+}
+
+.section-title {
+  font-size: 40px;
+  font-weight: var(--font-weight-bold);
+  color: #2d3748;
+  margin-bottom: 24px;
+  font-family: var(--font-poppins);
+}
+
+.section-description {
+  font-size: 16px;
+  line-height: 150%;
+  color: #2d3748;
+  margin-bottom: 40px;
+  max-width: 345px;
+  font-family: "Poppins";
+}
+
+.explore-more-btn {
+  width: 176px;
+  height: 48px;
+  background: var(--accent-1);
+  border: none;
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--primary-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.explore-more-btn:hover {
+  background: #3a4b63;
+  transform: translateY(-2px);
+}
+
+/* Right Side - Artist Cards */
+.artists-grid {
+  flex: 1;
+  width: 800px;
+  height: 582px;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: visible; /* Fixed: Changed from hidden to visible */
+  margin: 0 auto;
+}
+
+/* Artist Card */
+.artist-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.artist-card.active {
+  opacity: 1;
+}
+
+.artist-card:hover img {
+  transform: scale(1.02);
+}
+
+.artist-info {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 2;
+}
+
+.artist-info:hover  {
+    transform: scale(1.02);
+  }
+
+.artist-details {
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 24px;
+  width: 217px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.artist-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  pointer-events: none;
+}
+
+.artist-details h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(9, 9, 9, 0.57);
+  margin: 0 0 4px 0;
+  font-family: "Poppins";
+}
+
+.artist-details p {
+  font-size: 28px;
+  font-weight: 600;
+  color: #3a3a3a;
+  font-family: "Poppins";
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Navigation Dots */
+.nav-dots {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 2;
+  padding: 8px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  padding: 0;
+  appearance: none;
+}
+
+.nav-dot.active {
+  background: #ffffff;
+  transform: scale(1.2);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-dot:hover {
+  background: #ffffff;
+  transform: scale(1.1);
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .artists-content {
+    flex-direction: column;
+    gap: 60px;
+  }
+
+  .painting-popup {
+    right: -280px;
+  }
+
+  .artist-card:hover .painting-popup {
+    right: -260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .artists-section {
+    padding: 40px 0;
+  }
+
+  .artists-content {
+    gap: 40px;
+  }
+
+  .artists-header {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 32px;
+  }
+
+  .artists-grid {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+  }
+
+  .painting-popup {
+    top: -180px;
+    right: 20px;
+    transform: translateY(0);
+    width: 240px;
+    height: 300px;
+  }
+
+  .artist-card:hover .painting-popup {
+    top: -160px;
+    right: 20px;
+  }
+
+  .popup-image {
+    height: 200px;
+  }
+
+  .artist-details {
+    width: calc(100% - 48px);
+    padding: 16px;
+  }
+
+  .nav-dots {
+    bottom: 16px;
+  }
+}

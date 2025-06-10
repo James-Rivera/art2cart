@@ -1,0 +1,12 @@
+:root,
+[data-variable-collection-mode="mode-1"] {
+  /* mode-1 */
+  --accent-1: #ffd700;
+  --accent-2: #ff6b6b;
+  --primary-2: #2d3748;
+  --primary-1: #1a1f36;
+  --neutral-1: #ffffff;
+  --neutral-2: #f7fafc;
+  --supporting-1: #8b5cf6;
+  --supporting-2: #14b8a6;
+}

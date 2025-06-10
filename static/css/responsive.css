@@ -1,0 +1,180 @@
+/* ==========================================================================
+   Responsive Styles
+   ========================================================================== */
+
+/* Large Screens */
+@media (max-width: 1440px) {
+  .container2 {
+    padding: 0 48px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .rectangle-43 {
+    width: 350px;
+    height: 438px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .rectangle-43 {
+    width: 300px;
+    height: 375px;
+  }
+
+  .featured-wrapper {
+    padding: 20px 40px;
+  }
+  
+  .container3 {
+    max-width: calc(100vw - 80px);
+  }
+
+  .footer {
+    padding: 40px 50px;
+    height: auto;
+  }
+
+  .frame-52 {
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .frame-51 {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .text8 {
+    left: 60px;
+  }
+}
+
+/* Medium Screens */
+@media (max-width: 768px) {
+  .featured {
+    padding: 100px 20px 40px;  /* Adjusted padding for mobile */
+  }
+  
+  .container2 {
+    padding: 0 10px;
+  }
+
+  .container3 {
+    padding: 20px 0;
+    margin: 0;
+  }
+  
+  .nav-btn {
+    display: none;
+  }
+  
+  .product-card {
+    flex: 0 0 300px;
+    width: 300px;
+  }
+  
+  .product-image {
+    height: 428px;
+  }
+
+  .featured-wrapper {
+    padding: 20px 20px;
+  }
+  
+  .container3 {
+    max-width: calc(100vw - 40px);
+  }
+  
+  .hover-content {
+    width: 300px;
+  }
+
+  .footer {
+    padding: 40px 30px;
+  }
+
+  .frame-52 {
+    gap: 30px;
+  }
+
+  .frame-47,
+  .frame-48,
+  .frame-522,
+  .frame-49 {
+    width: calc(50% - 15px);
+  }
+
+  .header-bar {
+    padding: 15px 20px;
+  }
+    
+  .hero {
+    padding: 100px 20px 40px;
+  }
+    
+  .text8 {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 466px;
+    margin: 0 auto;
+  }
+    
+  .button {
+    flex-wrap: wrap;
+  }
+}
+
+/* Small Screens */
+@media (max-width: 480px) {
+  .footer {
+    padding: 30px 20px;
+  }
+
+  .frame-52 {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .frame-51,
+  .frame-47,
+  .frame-48,
+  .frame-522,
+  .frame-49 {
+    width: 100%;
+  }
+
+  .header-bar {
+    padding: 10px 15px;
+  }
+    
+  .nav {
+    gap: 15px;
+  }
+    
+  .stacked-group {
+    gap: 15px;
+  }
+    
+  .hero {
+    padding: 90px 15px 30px;
+    text-align: center;
+  }
+    
+  .text8 {
+    padding: 0;
+  }
+
+  .button {
+    flex-direction: column;
+    align-items: stretch;
+  }
+    
+  .buttons,
+  .buttons2 {
+    width: 100%;
+  }
+}

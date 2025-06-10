@@ -1,0 +1,185 @@
+/* Additional styles for product preview page */
+
+/* Improve main image sizing - make it responsive and full size */
+.main-image {
+    position: absolute;
+    left: 265px;
+    top: 111px;
+    width: 474px;
+    height: 647px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Ensure category button uses dynamic data and colors */
+.category-btn {
+    border-radius: 20px;
+    padding: 3px 20px;
+    width: fit-content;
+    margin-bottom: 22px;
+    display: inline-block;
+}
+
+/* Category-specific colors */
+.category-btn.digital-art {
+    background: #2D3748;
+}
+
+.category-btn.illustrations {
+    background: #749EE5;
+}
+
+.category-btn.photography {
+    background-color: #ec7b11;
+}
+
+.category-btn.templates {
+    background-color: #0bfa33;
+}
+
+.category-btn.digital-assets {
+    background-color: #e21351;
+}
+
+.category-btn.\33 d-models {
+    background-color: rgb(18, 231, 89);
+}
+
+.category-btn span {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+    text-transform: capitalize;
+}
+
+/* Additional styles for the rating form */
+.rating-form {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.rating-form h3 {
+    margin-bottom: 15px;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+}
+
+.rating-input {
+    margin-bottom: 15px;
+}
+
+.rating-input label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.star-rating {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.rating-star {
+    font-size: 24px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.rating-star:hover,
+.rating-star.active {
+    color: #FBBC05;
+}
+
+.comment-input label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.comment-input textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.submit-rating-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.submit-rating-btn:hover {
+    background: #0056b3;
+}
+
+.login-prompt, .purchase-prompt {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.login-prompt a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-prompt a:hover {
+    text-decoration: underline;
+}
+
+.artist-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.details-content {
+    padding: 20px;
+}
+
+.product-details-expanded ul {
+    list-style: none;
+    padding: 0;
+}
+
+.product-details-expanded li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.product-details-expanded li:last-child {
+    border-bottom: none;
+}

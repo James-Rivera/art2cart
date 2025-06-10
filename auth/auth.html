@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .logo img {
+        height: 40px;
+      }
+
+      .welcome-text {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+        width: 100%;
+      }
+
+      .name-group {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .form-group.half {
+        width: 50%;
+        margin-bottom: 0;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #ffd700;
+      }
+
+      .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 15px 0;
+        font-size: 14px;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .forgot-password {
+        color: #ff0000;
+        text-decoration: none;
+      }
+
+      button {
+        background-color: #ffd700;
+        color: #000;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+        font-size: 14px;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #ffc700;
+      }
+
+      .signup-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+
+      .signup-link a {
+        color: #000;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .alert {
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        display: none;
+        font-size: 14px;
+      }
+
+      .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .form-container {
+        display: none;
+      }
+
+      .form-container.active {
+        display: block;
+      }
+
+      .tab-buttons {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="loginForm" class="form-container active">
+        <div class="logo">
+          <img src="/Art2Cart/static/images/Logo.png" alt="Art2Cart Logo" />
+        </div>
+        <div class="welcome-text">
+          <p>Welcome back! Please Sign in to your account</p>
+        </div>
+        <div id="loginAlert" class="alert"></div>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="loginEmail"
+                placeholder="Username or email address"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+                required
+              />
+            </div>
+          </div>
+          <div class="remember-forgot">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe" />
+              Remember me
+            </label>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+          </div>
+          <button type="submit">Sign in</button>
+        </form>
+        <div class="signup-link">
+          Don't have an account?
+          <a href="#" onclick="showForm('signup')">Sign up here</a>
+        </div>
+      </div>
+      <div id="signupForm" class="form-container">
+        <div class="logo">
+          <img src="/Art2Cart/static/images/Logo.png" alt="Art2Cart Logo" />
+        </div>
+        <div class="welcome-text">
+          <p>Create Account</p>
+        </div>
+        <div id="signupAlert" class="alert"></div>
+        <form onsubmit="handleSignup(event)">
+          <div class="name-group">
+            <div class="form-group half">
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  id="signupFirstName"
+                  placeholder="First Name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group half">
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  id="signupLastName"
+                  placeholder="Last Name"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="signupUsername"
+                placeholder="Username"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="signupEmail"
+                placeholder="Email Address"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="signupPassword"
+                placeholder="Password"
+                required
+                minlength="6"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="signupConfirmPassword"
+                placeholder="Confirm Password"
+                required
+              />
+            </div>
+          </div>
+          <button type="submit">Create Account</button>
+        </form>
+        <div class="signup-link">
+          Already have an account?
+          <a href="#" onclick="showForm('login')">Sign in here</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showForm(formType) {
+        const loginForm = document.getElementById("loginForm");
+        const signupForm = document.getElementById("signupForm");
+
+        if (formType === "login") {
+          loginForm.classList.add("active");
+          signupForm.classList.remove("active");
+        } else {
+          loginForm.classList.remove("active");
+          signupForm.classList.add("active");
+        }
+      }
+
+      function showAlert(id, message, type) {
+        const alert = document.getElementById(id);
+        alert.textContent = message;
+        alert.className = `alert alert-${type}`;
+        alert.style.display = "block";
+      }
+
+      async function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        try {
+          const response = await fetch("/Art2Cart/auth/login.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();          if (response.ok) {
+            showAlert("loginAlert", "Login successful!", "success");
+            window.location.href = data.redirectUrl;
+          } else {
+            showAlert("loginAlert", data.error, "error");
+          }
+        } catch (error) {
+          showAlert(
+            "loginAlert",
+            "An error occurred. Please try again.",
+            "error"
+          );
+        }
+      }
+      async function handleSignup(event) {
+        event.preventDefault();
+        const firstName = document.getElementById("signupFirstName").value;
+        const lastName = document.getElementById("signupLastName").value;
+        const username = document.getElementById("signupUsername").value;
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        const confirmPassword = document.getElementById(
+          "signupConfirmPassword"
+        ).value;
+
+        if (password !== confirmPassword) {
+          showAlert("signupAlert", "Passwords do not match", "error");
+          return;
+        }
+
+        try {
+          const response = await fetch("/Art2Cart/auth/signup.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username,
+              email,
+              password,
+              firstName,
+              lastName,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showAlert(
+              "signupAlert",
+              "Registration successful! Please log in.",
+              "success"
+            );
+            setTimeout(() => {
+              showForm("login");
+            }, 2000);
+          } else {
+            showAlert("signupAlert", data.error, "error");
+          }
+        } catch (error) {
+          showAlert(
+            "signupAlert",
+            "An error occurred. Please try again.",
+            "error"
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

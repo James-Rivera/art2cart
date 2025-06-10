@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Marketplace</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="logo">Digital Marketplace</div>
+                <div class="nav-links">
+                    <button onclick="showSection('home')">Home</button>
+                    <button onclick="showSection('login')" id="loginNavBtn">Login</button>
+                    <button onclick="showSection('register')" id="registerNavBtn">Register</button>
+                    <button onclick="showSection('sell')" id="sellBtn" style="display:none;">Sell Products</button>
+                    <button onclick="showSection('myProducts')" id="myProductsBtn" style="display:none;">My Products</button>
+                    <button onclick="showSection('cart')" id="cartBtn" class="cart-button" style="display:none;">
+                        🛒 Cart
+                        <span id="cartBadge" style="display:none;">0</span>
+                    </button>
+                    <button onclick="logout()" id="logoutBtn" style="display:none;">Logout</button>
+                </div>
+            </div>
+            <div id="userInfo" style="display:none;">
+                <span id="welcomeMsg"></span>
+            </div>
+        </div>
+
+        <!-- Home Section -->
+        <div id="homeSection">
+            <div class="welcome-section">
+                <h2>Welcome to Digital Marketplace</h2>
+                <p>Buy and sell digital products like digital art, photography, music, and more!</p>
+            </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div id="loginSection" style="display:none;">
+            <h2>Login</h2>
+            <div id="loginAlert"></div>
+            <form id="loginForm">
+                <div>
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div>
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p><strong>Demo Accounts:</strong></p>
+            <p>Seller: john@example.com / password123</p>
+            <p>Buyer: jane@example.com / password123</p>
+            <p>Both: mike@example.com / password123</p>
+        </div>
+
+        <!-- Register Section -->
+        <div id="registerSection" style="display:none;">
+            <h2>Register</h2>
+            <div id="registerAlert"></div>
+            <form id="registerForm">
+                <div>
+                    <label for="regUsername">Username:</label>
+                    <input type="text" id="regUsername" required>
+                </div>
+                <div>
+                    <label for="regEmail">Email:</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div>
+                    <label for="regPassword">Password:</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <div>
+                    <label for="userType">Account Type:</label>
+                    <select id="userType" required>
+                        <option value="buyer">Buyer Only</option>
+                        <option value="seller">Seller Only</option>
+                        <option value="both">Both Buyer & Seller</option>
+                    </select>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <!-- Sell Products Section -->
+        <div id="sellSection" style="display:none;">
+            <h2>Add New Product</h2>
+            <div id="sellAlert"></div>
+            <form id="sellForm">
+                <div>
+                    <label for="productTitle">Product Title:</label>
+                    <input type="text" id="productTitle" required>
+                </div>
+                <div>
+                    <label for="productPrice">Price ($):</label>
+                    <input type="number" id="productPrice" step="0.01" min="0" required>
+                </div>
+                <div>
+                    <label for="productCategory">Category:</label>
+                    <select id="productCategory" required>
+                        <option value="digital_art">Digital Art</option>
+                        <option value="photography">Photography</option>
+                        <option value="music">Music</option>
+                        <option value="ebooks">E-books</option>
+                        <option value="software">Software</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="productDescription">Description:</label>
+                    <textarea id="productDescription" rows="4" required></textarea>
+                </div>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+
+        <!-- My Products Section -->
+        <div id="myProductsSection" style="display:none;">
+            <h2>My Products</h2>
+            <div class="products-grid" id="myProductsGrid">
+                <!-- User's products will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Cart Section -->
+        <div id="cartSection" style="display:none;">
+            <h2>Shopping Cart</h2>
+            <div id="cartContent">
+                <!-- Cart items will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Checkout Section -->
+        <div id="checkoutSection" style="display:none;">
+            <h2>Checkout</h2>
+            <div id="checkoutAlert"></div>
+            
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div id="checkoutItems"></div>
+                <div class="cart-total">
+                    <span>Total: </span>
+                    <span id="checkoutTotal">$0.00</span>
+                </div>
+            </div>
+
+            <form id="checkoutForm">
+                <h3>Payment Method</h3>
+                <div class="payment-methods">
+                    <label>
+                        <input type="radio" name="payment" value="credit" onchange="selectPaymentMethod('credit')">
+                        💳 Credit Card
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="paypal" onchange="selectPaymentMethod('paypal')">
+                        🅿️ PayPal
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="crypto" onchange="selectPaymentMethod('crypto')">
+                        ₿ Cryptocurrency
+                    </label>
+                </div>
+
+                <div id="creditCardForm" style="display:none;">
+                    <h3>Credit Card Information</h3>
+                    <div>
+                        <label for="cardNumber">Card Number:</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div>
+                        <label for="cardName">Cardholder Name:</label>
+                        <input type="text" id="cardName" placeholder="John Doe">
+                    </div>
+                </div>
+
+                <div id="paypalForm" style="display:none;">
+                    <h3>PayPal Payment</h3>
+                    <p>You will be redirected to PayPal to complete your payment.</p>
+                </div>
+
+                <div id="cryptoForm" style="display:none;">
+                    <h3>Cryptocurrency Payment</h3>
+                    <div>
+                        <label for="cryptoType">Select Cryptocurrency:</label>
+                        <select id="cryptoType">
+                            <option value="bitcoin">Bitcoin (BTC)</option>
+                            <option value="ethereum">Ethereum (ETH)</option>
+                            <option value="litecoin">Litecoin (LTC)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3>Billing Information</h3>
+                <div>
+                    <label for="billingName">Full Name:</label>
+                    <input type="text" id="billingName" required>
+                </div>
+                <div>
+                    <label for="billingEmail">Email:</label>
+                    <input type="email" id="billingEmail" required>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button type="button" onclick="showSection('cart')">Back to Cart</button>
+                    <button type="submit">Complete Payment</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Confirmation Section -->
+        <div id="confirmationSection" style="display:none;">
+            <div class="confirmation-section">
+                <div class="success-icon">✓</div>
+                <h2>Payment Successful!</h2>
+                <p>Thank you for your purchase. Your order has been processed successfully.</p>
+                
+                <div class="order-summary">
+                    <h3>Order Details</h3>
+                    <div id="confirmationItems"></div>
+                    <div class="cart-total">
+                        <span>Total Paid: </span>
+                        <span id="confirmationTotal">$0.00</span>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <p><strong>Order ID:</strong> <span id="orderNumber"></span></p>
+                        <p><strong>Payment Method:</strong> <span id="paymentMethod"></span></p>
+                        <p><strong>Date:</strong> <span id="orderDate"></span></p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button onclick="showSection('home')">Continue Shopping</button>
+                    <button onclick="downloadProducts()">Download Products</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize variables
+        let users = [];
+        let products = [];
+        let currentUser = null;
+        let orders = [];
+        let cart = [];
+        let selectedPaymentMethod = '';
+        let editingProductId = null;
+
+        // Initialize the app
+        function initializeApp() {
+            try {
+                // Initialize demo data
+                if (users.length === 0) {
+                    users = [
+                        {
+                            id: 1,
+                            username: 'john_seller',
+                            email: 'john@example.com',
+                            password: 'password123',
+                            user_type: 'seller'
+                        },
+                        {
+                            id: 2,
+                            username: 'jane_buyer',
+                            email: 'jane@example.com',
+                            password: 'password123',
+                            user_type: 'buyer'
+                        },
+                        {
+                            id: 3,
+                            username: 'artist_mike',
+                            email: 'mike@example.com',
+                            password: 'password123',
+                            user_type: 'both'
+                        }
+                    ];
+                }
+
+                if (products.length === 0) {
+                    products = [
+                        {
+                            id: 1,
+                            seller_id: 1,
+                            title: 'Abstract Digital Art Collection',
+                            description: 'Beautiful collection of 10 abstract digital artworks in high resolution',
+                            category: 'digital_art',
+                            price: 29.99,
+                            status: 'active',
+                            seller_name: 'john_seller'
+                        },
+                        {
+                            id: 2,
+                            seller_id: 3,
+                            title: 'Nature Photography Pack',
+                            description: 'Stunning nature photographs perfect for commercial use',
+                            category: 'photography',
+                            price: 19.99,
+                            status: 'active',
+                            seller_name: 'artist_mike'
+                        },
+                        {
+                            id: 3,
+                            seller_id: 1,
+                            title: 'Ambient Music Collection',
+                            description: 'Relaxing ambient music tracks for meditation and focus',
+                            category: 'music',
+                            price: 15.99,
+                            status: 'active',
+                            seller_name: 'john_seller'
+                        },
+                        {
+                            id: 4,
+                            seller_id: 3,
+                            title: 'Web Development eBook',
+                            description: 'Complete guide to modern web development with practical examples',
+                            category: 'ebooks',
+                            price: 24.99,
+                            status: 'active',
+                            seller_name: 'artist_mike'
+                        }
+                    ];
+                }
+
+                loadProducts();
+                updateCartBadge();
+                showSection('home');
+            } catch (error) {
+                console.error('Error initializing app:', error);
+            }
+        }
+
+        function showSection(section) {
+            // Hide all sections
+            const sections = ['homeSection', 'loginSection', 'registerSection', 'sellSection', 'myProductsSection', 'cartSection', 'checkoutSection', 'confirmationSection'];
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(section + 'Section');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+
+            // Load section-specific data
+            switch(section) {
+                case 'home':
+                    loadProducts();
+                    break;
+                case 'myProducts':
+                    loadMyProducts();
+                    break;
+                case 'cart':
+                    loadCart();
+                    break;
+                case 'checkout':
+                    loadCheckout();
+                    break;
+            }
+        }
+
+        function showAlert(elementId, message, type) {
+            const alertDiv = document.getElementById(elementId);
+            if (alertDiv) {
+                const alertClass = type === 'error' ? 'color: red;' : 'color: green;';
+                alertDiv.innerHTML = `<div style="${alertClass} padding: 10px; margin: 10px 0; border: 1px solid ${type === 'error' ? 'red' : 'green'}; border-radius: 4px;">${message}</div>`;
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                }, 3000);
+            }
+        }
+
+        function updateUIForLoggedInUser() {
+            document.getElementById('loginNavBtn').style.display = 'none';
+            document.getElementById('registerNavBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'inline-block';
+            document.getElementById('cartBtn').style.display = 'inline-block';
+            document.getElementById('userInfo').style.display = 'block';
+            document.getElementById('welcomeMsg').textContent = `Welcome, ${currentUser.username}! (${currentUser.user_type})`;
+
+            if (currentUser.user_type === 'seller' || currentUser.user_type === 'both') {
+                document.getElementById('sellBtn').style.display = 'inline-block';
+                document.getElementById('myProductsBtn').style.display = 'inline-block';
+            }
+        }
+
+        function updateUIForLoggedOutUser() {
+            document.getElementById('loginNavBtn').style.display = 'inline-block';
+            document.getElementById('registerNavBtn').style.display = 'inline-block';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('cartBtn').style.display = 'none';
+            document.getElementById('sellBtn').style.display = 'none';
+            document.getElementById('myProductsBtn').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+        }
+
+        function logout() {
+            currentUser = null;
+            cart = [];
+            updateUIForLoggedOutUser();
+            updateCartBadge();
+            showSection('home');
+            alert('Logged out successfully!');
+        }
+
+        function loadProducts() {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+
+            if (products.length === 0) {
+                grid.innerHTML = '<p>No products available.</p>';
+                return;
+            }
+
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.style.cssText = 'border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 5px; background: #f9f9f9;';
+                
+                const canAddToCart = currentUser && (currentUser.user_type === 'buyer' || currentUser.user_type === 'both') && currentUser.id !== product.seller_id;
+                
+                productCard.innerHTML = `
+                    <div style="background: #667eea; color: white; padding: 20px; text-align: center; margin-bottom: 10px; border-radius: 5px;">
+                        ${product.category.replace('_', ' ').toUpperCase()}
+                    </div>
+                    <h3>${product.title}</h3>
+                    <p style="font-size: 18px; font-weight: bold; color: #667eea;">$${product.price}</p>
+                    <p>${product.description}</p>
+                    <p><strong>Seller:</strong> ${product.seller_name}</p>
+                    <p><strong>Category:</strong> ${product.category.replace('_', ' ')}</p>
+                    ${canAddToCart ? `<button onclick="addToCart(${product.id})" style="background: #667eea; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>` : ''}
+                    ${!currentUser ? '<p style="color: #666;"><em>Login to purchase</em></p>' : ''}
+                `;
+                grid.appendChild(productCard);
+            });
+        }
+
+        function loadMyProducts() {
+            const grid = document.getElementById('myProductsGrid');
+            if (!grid || !currentUser) return;
+
+            grid.innerHTML = '';
+
+            const myProducts = products.filter(product => product.seller_id === currentUser.id);
+
+            if (myProducts.length === 0) {
+                grid.innerHTML = '<p>You haven\'t added any products yet. <button onclick="showSection(\'sell\')">Add your first product</button></p>';
+                return;
+            }
+
+            myProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.style.cssText = 'border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 5px; background: #f9f9f9;';
+                productCard.innerHTML = `
+                    <div style="background: #667eea; color: white; padding: 20px; text-align: center; margin-bottom: 10px; border-radius: 5px;">
+                        ${product.category.replace('_', ' ').toUpperCase()}
+                    </div>
+                    <h3>${product.title}</h3>
+                    <p style="font-size: 18px; font-weight: bold; color: #667eea;">$${product.price}</p>
+                    <p>${product.description}</p>
+                    <div style="margin-top: 15px;">
+                        <button onclick="editProduct(${product.id})" style="background: #6c757d; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">Edit</button>
+                        <button onclick="deleteProduct(${product.id})" style="background: #dc3545; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
+                    </div>
+                `;
+                grid.appendChild(productCard);
+            });
+        }
+
+        function addToCart(productId) {
+            if (!currentUser) {
+                alert('Please log in to add items to cart');
+                showSection('login');
+                return;
+            }
+
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            // Check if user is trying to buy their own product
+            if (product.seller_id === currentUser.id) {
+                alert('You cannot buy your own product');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                alert('Product already in cart');
+                return;
+            }
+
+            cart.push({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                seller_name: product.seller_name
+            });
+
+            updateCartBadge();
+            alert('Product added to cart!');
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                if (cart.length > 0) {
+                    badge.textContent = cart.length;
+                    badge.style.display = 'inline';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        function loadCart() {
+            const cartContent = document.getElementById('cartContent');
+            if (!cartContent) return;
+            
+            if (cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <p style="font-size: 18px; color: #666;">Your cart is empty</p>
+                        <button onclick="showSection('home')" style="background: #667eea; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Continue Shopping</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let total = 0;
+            let cartHTML = '';
+
+            cart.forEach(item => {
+                total += item.price;
+                cartHTML += `
+                    <div style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; gap: 20px;">
+                        <div style="width: 60px; height: 60px; background: #667eea; color: white; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 12px;">
+                            ${item.title.substring(0, 3)}
+                        </div>
+                        <div style="flex: 1;">
+                            <h4>${item.title}</h4>
+                            <p style="color: #667eea; font-weight: bold;">$${item.price}</p>
+                            <p>Seller: ${item.seller_name}</p>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" style="background: #dc3545; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Remove</button>
+                    </div>
+                `;
+            });
+
+            cartHTML += `
+                <div style="background: #f8f9fa; padding: 20px; margin-top: 20px; border-radius: 5px;">
+                    <div style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                        Total: $${total.toFixed(2)}
+                    </div>
+                    <button onclick="showSection('checkout')" style="background: #28a745; color: white; padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px;">Proceed to Checkout</button>
+                </div>
+            `;
+
+            cartContent.innerHTML = cartHTML;
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartBadge();
+            loadCart();
+            alert('Product removed from cart');
+        }
+
+        function loadCheckout() {
+            const itemsDiv = document.getElementById('checkoutItems');
+            const totalDiv = document.getElementById('checkoutTotal');
+            
+            if (!itemsDiv || !totalDiv) return;
+            
+            let total = 0;
+            let itemsHTML = '';
+
+            cart.forEach(item => {
+                total += item.price;
+                itemsHTML += `
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <span>${item.title}</span>
+                        <span>$${item.price.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+
+            itemsDiv.innerHTML = itemsHTML;
+            totalDiv.textContent = `$${total.toFixed(2)}`;
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Hide all payment forms
+            document.getElementById('creditCardForm').style.display = 'none';
+            document.getElementById('paypalForm').style.display = 'none';
+            document.getElementById('cryptoForm').style.display = 'none';
+            
+            // Show relevant form
+            if (method === 'credit') {
+                document.getElementById('creditCardForm').style.display = 'block';
+            } else if (method === 'paypal') {
+                document.getElementById('paypalForm').style.display = 'block';
+            } else if (method === 'crypto') {
+                document.getElementById('cryptoForm').style.display = 'block';
+            }
+        }
+
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            editingProductId = productId;
+            
+            // Pre-fill the form with existing product data
+            document.getElementById('productTitle').value = product.title;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productDescription').value = product.description;
+
+            // Show the sell form
+            showSection('sell');
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== productId);
+                loadMyProducts();
+                loadProducts(); // Refresh main products view
+                alert('Product deleted successfully');
+            }
+        }
+
+        function downloadProducts() {
+            alert('Download links have been sent to your email address!\n\nIn a real application, you would receive actual download links for your purchased digital products.');
+        }
+
+        function generateOrderNumber() {
+            return 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+        }
+
+        // Event Listeners
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showAlert('loginAlert', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                updateUIForLoggedInUser();
+                showSection('home');
+                showAlert('loginAlert', 'Login successful!', 'success');
+                
+                // Clear form
+                document.getElementById('loginForm').reset();
+            } else {
+                showAlert('loginAlert', 'Invalid email or password', 'error');
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const userType = document.getElementById('userType').value;
+            
+            if (!username || !email || !password || !userType) {
+                showAlert('registerAlert', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Check if user already exists
+            if (users.find(u => u.email === email)) {
+                showAlert('registerAlert', 'User with this email already exists', 'error');
+                return;
+            }
+            
+            if (users.find(u => u.username === username)) {
+                showAlert('registerAlert', 'Username already taken', 'error');
+                return;
+            }
+            
+            const newUser = {
+                id: Math.max(...users.map(u => u.id), 0) + 1,
+                username: username,
+                email: email,
+                password: password,
+                user_type: userType
+            };
+            
+            users.push(newUser);
+            showAlert('registerAlert', 'Registration successful! Please log in.', 'success');
+            
+            // Clear form
+            document.getElementById('registerForm').reset();
+            
+            // Switch to login after delay
+            setTimeout(() => {
+                showSection('login');
+            }, 1500);
+        });
+
+        document.getElementById('sellForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('productTitle').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const category = document.getElementById('productCategory').value;
+            const description = document.getElementById('productDescription').value.trim();
+            
+            if (!title || !price || !category || !description) {
+                showAlert('sellAlert', 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (price <= 0) {
+                showAlert('sellAlert', 'Price must be greater than 0', 'error');
+                return;
+            }
+            
+            if (editingProductId) {
+                // Update existing product
+                const productIndex = products.findIndex(p => p.id === editingProductId);
+                if (productIndex !== -1) {
+                    products[productIndex] = {
+                        ...products[productIndex],
+                        title: title,
+                        price: price,
+                        category: category,
+                        description: description
+                    };
+                    showAlert('sellAlert', 'Product updated successfully!', 'success');
+                    editingProductId = null;
+                }
+            } else {
+                // Add new product
+                const newProduct = {
+                    id: Math.max(...products.map(p => p.id), 0) + 1,
+                    seller_id: currentUser.id,
+                    title: title,
+                    description: description,
+                    category: category,
+                    price: price,
+                    status: 'active',
+                    seller_name: currentUser.username
+                };
+                
+                products.push(newProduct);
+                showAlert('sellAlert', 'Product added successfully!', 'success');
+            }
+            
+            // Clear form
+            document.getElementById('sellForm').reset();
+            
+            // Refresh products
+            loadProducts();
+            loadMyProducts();
+        });
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const billingName = document.getElementById('billingName').value.trim();
+            const billingEmail = document.getElementById('billingEmail').value.trim();
+            
+            if (!selectedPaymentMethod) {
+                showAlert('checkoutAlert', 'Please select a payment method', 'error');
+                return;
+            }
+            
+            if (!billingName || !billingEmail) {
+                showAlert('checkoutAlert', 'Please fill in all billing information', 'error');
+                return;
+            }
+            
+            // Validate payment method specific fields
+            if (selectedPaymentMethod === 'credit') {
+                const cardNumber = document.getElementById('cardNumber').value.trim();
+                const cardName = document.getElementById('cardName').value.trim();
+                
+                if (!cardNumber || !cardName) {
+                    showAlert('checkoutAlert', 'Please fill in all credit card information', 'error');
+                    return;
+                }
+                
+                if (cardNumber.replace(/\s/g, '').length < 13) {
+                    showAlert('checkoutAlert', 'Please enter a valid card number', 'error');
+                    return;
+                }
+            }
+            
+            // Process payment (simulate)
+            processPayment();
+        });
+
+        function processPayment() {
+            // Simulate payment processing
+            showAlert('checkoutAlert', 'Processing payment...', 'success');
+            
+            setTimeout(() => {
+                // Create order
+                const orderNumber = generateOrderNumber();
+                const total = cart.reduce((sum, item) => sum + item.price, 0);
+                
+                const order = {
+                    id: orderNumber,
+                    user_id: currentUser.id,
+                    items: [...cart],
+                    total: total,
+                    payment_method: selectedPaymentMethod,
+                    billing_name: document.getElementById('billingName').value,
+                    billing_email: document.getElementById('billingEmail').value,
+                    date: new Date().toLocaleDateString(),
+                    status: 'completed'
+                };
+                
+                orders.push(order);
+                
+                // Show confirmation
+                showOrderConfirmation(order);
+                
+                // Clear cart
+                cart = [];
+                updateCartBadge();
+                
+                // Clear checkout form
+                document.getElementById('checkoutForm').reset();
+                selectedPaymentMethod = '';
+                
+                // Show confirmation section
+                showSection('confirmation');
+                
+            }, 2000);
+        }
+
+        function showOrderConfirmation(order) {
+            // Populate confirmation items
+            const confirmationItems = document.getElementById('confirmationItems');
+            const confirmationTotal = document.getElementById('confirmationTotal');
+            const orderNumber = document.getElementById('orderNumber');
+            const paymentMethod = document.getElementById('paymentMethod');
+            const orderDate = document.getElementById('orderDate');
+            
+            if (!confirmationItems || !confirmationTotal || !orderNumber || !paymentMethod || !orderDate) return;
+            
+            let itemsHTML = '';
+            order.items.forEach(item => {
+                itemsHTML += `
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <span>${item.title}</span>
+                        <span>$${item.price.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            
+            confirmationItems.innerHTML = itemsHTML;
+            confirmationTotal.textContent = `$${order.total.toFixed(2)}`;
+            orderNumber.textContent = order.id;
+            
+            // Format payment method display
+            let paymentDisplay = '';
+            switch(order.payment_method) {
+                case 'credit':
+                    paymentDisplay = 'Credit Card';
+                    break;
+                case 'paypal':
+                    paymentDisplay = 'PayPal';
+                    break;
+                case 'crypto':
+                    const cryptoType = document.getElementById('cryptoType') ? document.getElementById('cryptoType').value : 'bitcoin';
+                    paymentDisplay = `Cryptocurrency (${cryptoType.charAt(0).toUpperCase() + cryptoType.slice(1)})`;
+                    break;
+                default:
+                    paymentDisplay = order.payment_method;
+            }
+            
+            paymentMethod.textContent = paymentDisplay;
+            orderDate.textContent = order.date;
+        }
+
+        // Format card number input
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    if (formattedValue !== e.target.value) {
+                        e.target.value = formattedValue;
+                    }
+                });
+            }
+        });
+
+        // Initialize app when page loads
+        window.addEventListener('load', initializeApp);
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links button {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .cart-button {
+            position: relative;
+        }
+
+        #cartBadge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        #userInfo {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-section {
+            text-align: center;
+            padding: 3rem 0;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .welcome-section h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .products-grid > div {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .products-grid > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        form h2 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 2rem;
+        }
+
+        form div {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .order-summary h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-align: right;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #e1e5e9;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-methods label {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-methods label:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .payment-methods input[type="radio"] {
+            width: auto;
+            margin-right: 1rem;
+        }
+
+        .confirmation-section {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-section h2 {
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-section p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .confirmation-section .order-summary {
+            text-align: left;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .welcome-section h2 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            form {
+                margin: 0 1rem;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>
