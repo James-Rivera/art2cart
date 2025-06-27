@@ -11,6 +11,26 @@ To clone:
 git clone https://github.com/James-Rivera/art2cart.git
 ```
 
+---
+
+## Demo/Test Accounts
+
+You can use these accounts to log in and test the platform:
+
+- **Admin**
+  - Email: `admin@art2cart.com`
+  - Password: `admin123`
+
+- **Buyer**
+  - Email: `buyer@art2cart.com`
+  - Password: `test123`
+
+- **Buyer/Seller**
+  - Email: `buyerseller@art2cart.com`
+  - Password: `test123`
+
+---
+
 ## Requirements
 - WampServer64 (or any local server with PHP & MySQL)
 - PHP 7.4+ (recommended)
