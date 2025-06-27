@@ -2,6 +2,15 @@
 
 Welcome to **Art2Cart**! This is a simple digital marketplace for buying and selling digital art and assets. Below is a quick guide to get you started with the project.
 
+You can also pull the complete source code directly from our GitHub repository:
+
+[https://github.com/James-Rivera/art2cart.git](https://github.com/James-Rivera/art2cart.git)
+
+To clone:
+```
+git clone https://github.com/James-Rivera/art2cart.git
+```
+
 ## Requirements
 - WampServer64 (or any local server with PHP & MySQL)
 - PHP 7.4+ (recommended)
@@ -60,7 +69,7 @@ If you want to use a custom local domain (like `art2cart.local`):
 
 ---
 
-## How the Codebase Works (For Our Professor)
+## How the Codebase Works
 
 **Art2Cart** is a digital marketplace for buying and selling digital art and assets. Here’s how it’s structured and works:
 
