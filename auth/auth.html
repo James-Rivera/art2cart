@@ -3,7 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auth Demo</title>
+    <title>Art2Cart - Auth</title>
+    
+    <!-- Dynamic favicon and image loading -->
+    <script>
+        function getAuthBaseUrl() {
+            const host = window.location.host;
+            const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+            const protocol = window.location.protocol;
+            
+            if (isLocalhost) {
+                return `${protocol}//${host}/Art2Cart/`;
+            } else {
+                return `${protocol}//${host}/`;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const baseUrl = getAuthBaseUrl();
+            
+            // Add favicons dynamically
+            const faviconLinks = [
+                { rel: 'icon', type: 'image/png', sizes: '32x32', href: baseUrl + 'static/images/favicon/favicon-32x32.png' },
+                { rel: 'icon', type: 'image/png', sizes: '16x16', href: baseUrl + 'static/images/favicon/favicon-16x16.png' },
+                { rel: 'shortcut icon', href: baseUrl + 'static/images/favicon/favicon.ico', type: 'image/x-icon' }
+            ];
+            
+            faviconLinks.forEach(linkData => {
+                const link = document.createElement('link');
+                Object.keys(linkData).forEach(key => {
+                    link.setAttribute(key, linkData[key]);
+                });
+                document.head.appendChild(link);
+            });
+            
+            // Update logo images with correct path
+            const logoImages = document.querySelectorAll('.logo img');
+            logoImages.forEach(img => {
+                img.src = baseUrl + 'static/images/Logo.png';
+            });
+            
+            // Store base URL globally for form actions
+            window.baseUrl = baseUrl;
+            
+            // Update form action URLs
+            const loginForm = document.querySelector('#loginForm form');
+            const signupForm = document.querySelector('#signupForm form');
+            
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleLogin(e, baseUrl);
+                });
+            }
+            
+            if (signupForm) {
+                signupForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleSignup(e, baseUrl);
+                });
+            }
+        });
+    </script>
+
+    <meta name="theme-color" content="#ffffff">
+
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -34,6 +98,7 @@
         color: #333;
         margin-bottom: 30px;
       }
+      
       .form-group {
         margin-bottom: 15px;
         width: 100%;
@@ -144,29 +209,25 @@
       .form-container.active {
         display: block;
       }
-
-      .tab-buttons {
-        display: none;
-      }
     </style>
   </head>
   <body>
     <div class="container">
       <div id="loginForm" class="form-container active">
         <div class="logo">
-          <img src="/Art2Cart/static/images/Logo.png" alt="Art2Cart Logo" />
+          <img src="" alt="Art2Cart Logo" />
         </div>
         <div class="welcome-text">
           <p>Welcome back! Please Sign in to your account</p>
         </div>
         <div id="loginAlert" class="alert"></div>
-        <form onsubmit="handleLogin(event)">
+        <form>
           <div class="form-group">
             <div class="input-wrapper">
               <input
                 type="email"
                 id="loginEmail"
-                placeholder="Username or email address"
+                placeholder="Email address"
                 required
               />
             </div>
@@ -195,15 +256,16 @@
           <a href="#" onclick="showForm('signup')">Sign up here</a>
         </div>
       </div>
+
       <div id="signupForm" class="form-container">
         <div class="logo">
-          <img src="/Art2Cart/static/images/Logo.png" alt="Art2Cart Logo" />
+          <img src="" alt="Art2Cart Logo" />
         </div>
         <div class="welcome-text">
           <p>Create Account</p>
         </div>
         <div id="signupAlert" class="alert"></div>
-        <form onsubmit="handleSignup(event)">
+        <form>
           <div class="name-group">
             <div class="form-group half">
               <div class="input-wrapper">
@@ -297,13 +359,13 @@
         alert.style.display = "block";
       }
 
-      async function handleLogin(event) {
+      async function handleLogin(event, baseUrl) {
         event.preventDefault();
         const email = document.getElementById("loginEmail").value;
         const password = document.getElementById("loginPassword").value;
 
         try {
-          const response = await fetch("/Art2Cart/auth/login.php", {
+          const response = await fetch(baseUrl + "auth/login.php", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -311,7 +373,9 @@
             body: JSON.stringify({ email, password }),
           });
 
-          const data = await response.json();          if (response.ok) {
+          const data = await response.json();
+
+          if (response.ok) {
             showAlert("loginAlert", "Login successful!", "success");
             window.location.href = data.redirectUrl;
           } else {
@@ -325,16 +389,15 @@
           );
         }
       }
-      async function handleSignup(event) {
+
+      async function handleSignup(event, baseUrl) {
         event.preventDefault();
         const firstName = document.getElementById("signupFirstName").value;
         const lastName = document.getElementById("signupLastName").value;
         const username = document.getElementById("signupUsername").value;
         const email = document.getElementById("signupEmail").value;
         const password = document.getElementById("signupPassword").value;
-        const confirmPassword = document.getElementById(
-          "signupConfirmPassword"
-        ).value;
+        const confirmPassword = document.getElementById("signupConfirmPassword").value;
 
         if (password !== confirmPassword) {
           showAlert("signupAlert", "Passwords do not match", "error");
@@ -342,7 +405,7 @@
         }
 
         try {
-          const response = await fetch("/Art2Cart/auth/signup.php", {
+          const response = await fetch(baseUrl + "auth/signup.php", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

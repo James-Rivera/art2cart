@@ -1,3 +1,7 @@
+/* Import CSS Variables and Fonts */
+@import url('../var.css');
+@import url('../fonts.css');
+
 body {
   font-family: var(--font-poppins);
   margin: 0;
@@ -430,4 +434,226 @@ body {
   font-weight: 500;
   line-height: 1.5;
   color: var(--primary-2);
+}
+
+/* Dark Mode Styles for Seller Dashboard */
+[data-theme="dark"] body {
+  background-color: var(--bg-primary);
+  color: var(--primary-2);
+}
+
+[data-theme="dark"] .dashboard-container {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .dashboard-header h1 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .upload-btn {
+  background-color: var(--accent-1);
+  color: var(--text-contrast);
+}
+
+[data-theme="dark"] .upload-btn:hover {
+  background-color: var(--accent-2);
+}
+
+/* Product Cards Dark Mode */
+[data-theme="dark"] .product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+[data-theme="dark"] .product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 15px var(--shadow-medium);
+}
+
+[data-theme="dark"] .product-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .product-stats {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .product-price {
+  color: var(--accent-1);
+}
+
+[data-theme="dark"] .product-status {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+/* Filter Buttons Dark Mode */
+[data-theme="dark"] .filter-btn {
+  border: 2px solid var(--accent-1);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .filter-btn.active {
+  background: var(--accent-1);
+  color: var(--text-contrast);
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+[data-theme="dark"] .filter-btn:hover {
+  background: var(--accent-1);
+  color: var(--text-contrast);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+/* Action Buttons Dark Mode */
+[data-theme="dark"] .edit-btn {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .edit-btn:hover {
+  background-color: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .delete-btn {
+  background-color: var(--accent-2);
+  color: var(--text-contrast);
+}
+
+[data-theme="dark"] .delete-btn:hover {
+  background-color: #ff5252;
+}
+
+[data-theme="dark"] .toggle-btn {
+  background-color: var(--supporting-1);
+  color: var(--text-contrast);
+}
+
+[data-theme="dark"] .toggle-btn:hover {
+  background-color: #7c3aed;
+}
+
+/* No Products Message Dark Mode */
+[data-theme="dark"] .no-products {
+  background: var(--card-bg);
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .no-products h3 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .no-products a {
+  color: var(--accent-1);
+}
+
+[data-theme="dark"] .no-products a:hover {
+  color: var(--accent-2);
+}
+
+/* Dark Mode Support for Modal */
+[data-theme="dark"] .modal {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .modal-content h2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .close-modal {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .close-modal:hover {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-group label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-group input[type="text"],
+[data-theme="dark"] .form-group input[type="number"],
+[data-theme="dark"] .form-group textarea,
+[data-theme="dark"] .form-group select {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-group input[type="text"]:focus,
+[data-theme="dark"] .form-group input[type="number"]:focus,
+[data-theme="dark"] .form-group textarea:focus,
+[data-theme="dark"] .form-group select:focus {
+  border-color: var(--accent-1);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+[data-theme="dark"] .form-group select option {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .upload-btn {
+  background-color: var(--accent-1);
+  color: var(--primary-2);
+}
+
+[data-theme="dark"] .upload-btn:hover {
+  background-color: #e6c200;
+}
+
+[data-theme="dark"] .alert-success {
+  background-color: rgba(20, 184, 166, 0.1);
+  color: var(--supporting-2);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+[data-theme="dark"] .alert-error {
+  background-color: rgba(255, 107, 107, 0.1);
+  color: var(--accent-2);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+/* Additional dark mode form styling */
+[data-theme="dark"] .form-group input[type="file"] {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .form-group input[type="file"]::-webkit-file-upload-button {
+  background-color: var(--accent-1);
+  color: var(--primary-2);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+[data-theme="dark"] .form-group input[type="file"]::-webkit-file-upload-button:hover {
+  background-color: #e6c200;
+}
+
+/* Ensure placeholder text is visible in dark mode */
+[data-theme="dark"] .form-group input::placeholder,
+[data-theme="dark"] .form-group textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
 }

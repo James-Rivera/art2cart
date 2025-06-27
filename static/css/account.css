@@ -1,5 +1,6 @@
-@import url('/Art2Cart/static/css/var.css');
-@import url('/Art2Cart/static/css/fonts.css');
+/* Use relative paths for better deployment flexibility */
+@import url('var.css');
+@import url('fonts.css');
 
 body {
     font-family: var(--font-inter), sans-serif;
@@ -553,39 +554,258 @@ body {
     height: 16px;
 }
 
-/* Responsive styles for purchases section */
-@media (max-width: 768px) {
-    .purchases-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-    }
-    
-    .purchases-section h2 {
-        font-size: 24px;
-    }
-    
-    .product-meta {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .purchase-date {
-        text-align: left;
-    }
+/* Dark Mode Styles */
+[data-theme="dark"] body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
 }
 
-@media (max-width: 480px) {
-    .purchases-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    
-    .product-details {
-        padding: 16px;
-    }
-    
-    .purchase-actions {
-        padding: 0 16px 16px 16px;
-    }
+[data-theme="dark"] .account-container {
+    background-color: var(--bg-primary);
+}
+
+/* Profile Section Dark Mode */
+[data-theme="dark"] .profile-section {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-primary);
+    box-shadow: 0 4px 24px var(--shadow-medium);
+}
+
+[data-theme="dark"] .profile-section:hover {
+    box-shadow: 0 8px 32px var(--shadow-large);
+}
+
+[data-theme="dark"] .profile-header {
+    border-bottom: 2px solid var(--border-primary);
+}
+
+[data-theme="dark"] .profile-info h1 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .profile-email {
+    color: var(--text-secondary) !important;
+}
+
+/* Profile Avatar Dark Mode */
+[data-theme="dark"] .profile-avatar {
+    background: var(--accent-1);
+    color: #000000 !important;
+}
+
+/* Info Grid Dark Mode */
+[data-theme="dark"] .info-card {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-primary);
+    box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+[data-theme="dark"] .info-card:hover {
+    box-shadow: 0 4px 16px var(--shadow-medium);
+}
+
+[data-theme="dark"] .info-card h3 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .info-card p {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .info-value {
+    color: var(--accent-1);
+}
+
+/* Purchases Section Dark Mode */
+[data-theme="dark"] .purchases-section {
+    background: var(--card-bg);
+}
+
+[data-theme="dark"] .purchases-section h2 {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .purchase-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+[data-theme="dark"] .purchase-card:hover {
+    box-shadow: 0 4px 16px var(--shadow-medium);
+}
+
+[data-theme="dark"] .product-title {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .product-seller {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .product-price {
+    color: var(--accent-1);
+}
+
+[data-theme="dark"] .purchase-date {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .product-category {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+}
+
+/* Download Button Dark Mode */
+[data-theme="dark"] .download-btn {
+    background: var(--accent-1);
+    color: var(--text-contrast);
+    border: 1px solid var(--accent-1);
+}
+
+[data-theme="dark"] .download-btn:hover {
+    background: var(--accent-2);
+    border: 1px solid var(--accent-2);
+}
+
+/* No Purchases Message Dark Mode */
+[data-theme="dark"] .no-purchases {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .no-purchases h3 {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .no-purchases p {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .no-purchases a {
+    color: var(--accent-1);
+}
+
+[data-theme="dark"] .no-purchases a:hover {
+    color: var(--accent-2);
+}
+
+/* Settings Section Dark Mode */
+[data-theme="dark"] .settings-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .settings-section h2 {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .settings-item {
+    border-bottom: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .settings-item label {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .settings-item input {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .settings-item input:focus {
+    border-color: var(--accent-1);
+    box-shadow: 0 0 0 2px var(--accent-1-transparent);
+}
+
+/* Action Buttons Dark Mode */
+[data-theme="dark"] .btn-primary {
+    background: var(--accent-1);
+    border: 1px solid var(--accent-1);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background: var(--accent-2);
+    border: 1px solid var(--accent-2);
+}
+
+[data-theme="dark"] .btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: var(--bg-primary);
+}
+
+/* Additional Dark Mode Fixes for Account Page */
+[data-theme="dark"] .alert {
+    background: #1a1f36 !important;
+    border-left-color: #ffd700;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .alert p {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .empty-state {
+    background: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .empty-state p {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .purchases-section h2,
+[data-theme="dark"] .purchases-section h3 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .purchases-section p,
+[data-theme="dark"] .purchases-section span {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .account-container h1,
+[data-theme="dark"] .account-container h2,
+[data-theme="dark"] .account-container h3 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .account-container p,
+[data-theme="dark"] .account-container span {
+    color: var(--text-secondary) !important;
+}
+
+/* Fix for account type visibility in dark mode */
+[data-theme="dark"] .info-label {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .info-value {
+    color: var(--text-primary) !important;
+}
+
+/* Ensure all text in info cards is visible */
+[data-theme="dark"] .info-card span,
+[data-theme="dark"] .info-card div:not(.btn) {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .info-card .info-value,
+[data-theme="dark"] .info-card strong {
+    color: var(--text-primary) !important;
+}
+
+/* Member since date and account status fixes */
+[data-theme="dark"] .member-since,
+[data-theme="dark"] .account-status,
+[data-theme="dark"] .user-type {
+    color: var(--text-secondary) !important;
+    opacity: 1 !important;
 }

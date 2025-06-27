@@ -68,6 +68,24 @@
   font-family: "Poppins";
 }
 
+/* Dark Mode Styles for Artists Section */
+[data-theme="dark"] .artists-section {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .artists-section::before {
+  background-color: rgba(15, 23, 42, 0.8); /* Dark overlay instead of golden */
+}
+
+[data-theme="dark"] .section-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .section-description {
+  color: var(--text-secondary);
+}
+
 .explore-more-btn {
   width: 176px;
   height: 48px;
@@ -273,4 +291,53 @@
   .nav-dots {
     bottom: 16px;
   }
+}
+
+/* Dark Mode Styles for Artists Section */
+[data-theme="dark"] .artists-section {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .artists-section::before {
+  background-color: rgba(15, 23, 42, 0.8); /* Dark overlay instead of golden */
+}
+
+[data-theme="dark"] .section-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .section-description {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .explore-more-btn {
+  background: var(--accent-1);
+  color: #000;
+  border: 2px solid var(--accent-1);
+}
+
+[data-theme="dark"] .explore-more-btn:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+[data-theme="dark"] .artist-details h3 {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .artist-details p {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .nav-dots {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+[data-theme="dark"] .nav-dot {
+  background: var(--border-secondary);
+}
+
+[data-theme="dark"] .nav-dot.active {
+  background: var(--accent-1);
 }

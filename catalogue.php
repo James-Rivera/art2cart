@@ -2,9 +2,13 @@
 session_start();
 require_once 'config/db.php';
 require_once 'includes/products.php';
+require_once 'includes/Art2CartConfig.php';
 
 // Initialize error reporting
 Database::initErrorReporting();
+
+// Get base URL for <base href> (just the URL, not the tag)
+$baseHref = Art2CartConfig::getBaseUrl();
 
 // Get current user ID if logged in
 $currentUserId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
@@ -23,13 +27,17 @@ foreach ($categories as $category) {
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    <meta name="description" content="Art2Cart - Digital Art Marketplace" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Art2Cart - Digital Art Marketplace" />
     <title>Art 2 Cart - Catalogue</title>
+    <?php Art2CartConfig::echoBaseHref(); ?>    
+    
     <!-- Stylesheets -->
     <link rel="stylesheet" href="static/css/catalogue/cata.css" />
     <link rel="stylesheet" href="static/css/var.css" />
     <link rel="stylesheet" href="static/css/fonts.css" />
-
+    <link rel="stylesheet" href="static/css/template/header.css" />
+    
     <!-- Standard favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon/favicon-16x16.png">
@@ -50,6 +58,7 @@ foreach ($categories as $category) {
 
     <!-- Optional theme color -->
     <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
 
 </head>
 
@@ -59,37 +68,40 @@ foreach ($categories as $category) {
     <div id="header"></div>
 
     <main>
-
-        <!-- Header Hero-->        <section class="header-hero"> <img class="header-image" src="/Art2Cart/static/images/catalogue/image.png" />
+        <!-- Header Hero-->
+        <section class="header-hero">
+            <img class="header-image" src="static/images/catalogue/image.png" />
             <div class="cata-head-text">
                 <div class="products1">Products</div>
                 <div class="desc-contianer">
                     <h1 class="home">Home</h1>
-                    <img class="arrow" src="/Art2Cart/static/images/catalogue/arrow0.svg" />
+                    <img class="arrow" src="static/images/catalogue/arrow0.svg" />
                     <div class="products2">Products</div>
                 </div>
             </div>
-        </section> <!-- Products Section -->
-        <section class="products"> 
+        </section>
+
+        <!-- Products Section -->
+        <section class="products">
             <?php foreach ($categories as $category):
-                                        $displayProducts = array_slice($categoryProducts[$category['slug']], 0, 4);
-                                        $totalProducts = count($categoryProducts[$category['slug']]);
-                                    ?>
+                $displayProducts = array_slice($categoryProducts[$category['slug']], 0, 4);
+                $totalProducts = count($categoryProducts[$category['slug']]);
+            ?>
                 <div class="category-section">
                     <div class="category-header">
                         <h2 class="category-title"><?php echo strtoupper($category['name']); ?></h2>
                         <?php if ($totalProducts > 4): ?>
                             <a href="category-view.php?category=<?php echo $category['slug']; ?>" class="view-all">View All</a>
                         <?php endif; ?>
-                    </div>                    <div class="product-grid">
-                        <?php foreach ($displayProducts as $product): ?>
-                            <article class="product-card" onclick="viewProduct(<?php echo $product['id']; ?>)" style="cursor: pointer;">
+                    </div>
+                    <div class="product-grid">
+                        <?php foreach ($displayProducts as $product): ?>                            <article class="product-card" onclick="viewProduct(<?php echo $product['id']; ?>)" style="cursor: pointer;">
                                 <img class="product-image"
-                                    src="<?php echo htmlspecialchars($product['image']); ?>"
+                                    src="<?php echo htmlspecialchars($baseHref . $product['image']); ?>"
                                     alt="<?php echo htmlspecialchars($product['title']); ?>" />
                                 <div class="hover-content">
                                     <h3 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h3>
-                                    <div class="rating">                                        <img src="/Art2Cart/static/images/star.svg" alt="star" class="star-icon" />
+                                    <div class="rating"> <img src="static/images/star.svg" alt="star" class="star-icon" />
                                         <span class="rating-score"><?php echo number_format($product['rating'], 1); ?></span>
                                         <span class="downloads">(<?php echo $product['downloads']; ?> downloads)</span>
                                     </div>
@@ -105,10 +117,12 @@ foreach ($categories as $category) {
                 </div>
             <?php endforeach; ?>
         </section>
-    </main>
-
-    <div id="footer"></div>
-    <script src="static/js/load.js"></script>    <!-- Add cart functionality -->
+    </main>    <div id="footer"></div>
+    <script>
+        // Pass PHP base URL to JavaScript
+        window.baseHref = '<?php echo $baseHref; ?>';
+    </script>    
+    <script src="static/js/load.js?v=<?php echo time(); ?>"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Add click event listeners to all "Add to Cart" buttons
@@ -119,42 +133,42 @@ foreach ($categories as $category) {
                 });
             });
         });
-
+        
         // Function to redirect to product preview page
         function viewProduct(productId) {
-            window.location.href = `/Art2Cart/product_preview.php?id=${productId}`;
+            window.location.href = `product_preview.php?id=${productId}`;
         }
 
         function addToCart(productId) {
             // Check if user is logged in
-            fetch('/Art2Cart/api/cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `action=add&product_id=${productId}&quantity=1`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    showNotification('Product added to cart!', 'success');
-                    
-                    // Update cart count in header if exists
-                    updateHeaderCartCount(data.cart_count);
-                } else {
-                    if (data.message.includes('log in')) {
-                        // Redirect to login if not logged in
-                        window.location.href = '/Art2Cart/auth/auth.html';
+            fetch('api/cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=add&product_id=${productId}&quantity=1`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        showNotification('Product added to cart!', 'success');
+
+                        // Update cart count in header if exists
+                        updateHeaderCartCount(data.cart_count);
                     } else {
-                        showNotification(data.message || 'Failed to add item to cart', 'error');
+                        if (data.message.includes('log in')) {
+                            // Redirect to login if not logged in
+                            window.location.href = 'auth/auth.html';
+                        } else {
+                            showNotification(data.message || 'Failed to add item to cart', 'error');
+                        }
                     }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('An error occurred while adding the item to cart', 'error');
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('An error occurred while adding the item to cart', 'error');
+                });
         }
 
         function showNotification(message, type) {
@@ -176,9 +190,9 @@ foreach ($categories as $category) {
                 font-weight: 500;
                 animation: slideIn 0.3s ease;
             `;
-            
+
             document.body.appendChild(notification);
-            
+
             // Remove notification after 3 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease';

@@ -298,3 +298,43 @@
   font-weight: 400;
   position: relative;
 }
+
+/* Dark Mode Footer Styles */
+[data-theme="dark"] .footer {
+  background: linear-gradient(to left, #1a202c, #1a202c);
+}
+
+[data-theme="dark"] .art-2-cart-span {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .art-2-cart-span3 {
+  color: var(--accent-1);
+}
+
+[data-theme="dark"] .about-features-works li a,
+[data-theme="dark"] .about-features-works2 li a,
+[data-theme="dark"] .about-features-works3 li a,
+[data-theme="dark"] .about-features-works4 li a {
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+[data-theme="dark"] .about-features-works li a:hover,
+[data-theme="dark"] .about-features-works2 li a:hover,
+[data-theme="dark"] .about-features-works3 li a:hover,
+[data-theme="dark"] .about-features-works4 li a:hover {
+  color: var(--accent-1);
+}
+
+[data-theme="dark"] .help-menu {
+  color: var(--accent-1);
+}
+
+[data-theme="dark"] .we-have-clothes-that-suits-your-style-and-which-you-re-proud-to-wear-from-women-to-men {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] ._2025-art-2-cart-all-rights-reverved {
+  color: var(--text-secondary);
+}

@@ -2,11 +2,16 @@
 session_start();
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/Cart.php';
+require_once __DIR__ . '/includes/Art2CartConfig.php';
+
+// Get base URL configuration
+$baseHref = Art2CartConfig::getBaseUrl();
+$baseUrl = Art2CartConfig::getBaseUrl();
 
 // Check if user is logged in
 $loggedIn = isset($_SESSION['user_id']);
 if (!$loggedIn) {
-    header('Location: /Art2Cart/auth/auth.html');
+    header('Location: ' . $baseUrl . 'auth/auth.html');
     exit;
 }
 
@@ -25,12 +30,37 @@ $pageTitle = "Shopping Cart - Art2Cart";
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <title><?php echo $pageTitle; ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">      <title><?php echo $pageTitle; ?></title>
+
+    <!-- Base URL configuration -->
+    <base href="<?php echo htmlspecialchars($baseHref); ?>">
+
+    <!-- Standard favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="static/images/favicon/favicon-96x96.png">
+    
+    <!-- ICO fallback for older browsers -->
+    <link rel="shortcut icon" href="static/images/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- Apple Touch Icon (iOS/iPadOS) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicon/apple-touch-icon.png">
+
+    <!-- Android/Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="static/images/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="static/images/favicon/android-chrome-512x512.png">
+
+    <!-- Web Manifest for PWA support -->
+    <link rel="manifest" href="static/images/favicon/site.webmanifest">    <!-- Optional theme color -->
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="static/css/var.css" />
     <link rel="stylesheet" href="static/css/fonts.css" />
+    <link rel="stylesheet" href="static/css/template/header.css" />
     <link rel="stylesheet" href="static/css/cart.css" />
 </head>
 <body>
@@ -43,54 +73,54 @@ $pageTitle = "Shopping Cart - Art2Cart";
             <div class="cart-empty">
                 <h2>Your cart is empty</h2>
                 <p>Looks like you haven't added any artworks to your cart yet.</p>
-                <a href="/Art2Cart/catalogue.php">Browse Artworks</a>
+                <a href="catalogue.php">Browse Artworks</a>
             </div>
         <?php else: ?>
             <!-- Cart with Items -->
-            <div class="cart-content">
-                <!-- Cart Items -->
+            <div class="cart-content">                <!-- Cart Items -->
                 <div class="cart-items">
+                    <!-- Select All Checkbox -->                    <div class="select-all-container">
+                        <label class="select-all-label">
+                            <input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll()">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                            Select All Items for Checkout
+                        </label>
+                    </div>
+                    
                     <?php foreach ($cartItems as $item): ?>                        <div class="cart-item" data-product-id="<?php echo $item['product_id']; ?>">
-                            <div class="item-image">
-                                <?php 
+                            <!-- Item Selection Checkbox -->
+                            <div class="item-checkbox">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" class="item-select-checkbox" data-product-id="<?php echo $item['product_id']; ?>" onchange="updateCartSelection()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="item-image"><?php 
                                 $imagePath = $item['file_path'] ?? '';
                                 // If it's an uploaded file (starts with 'uploads/') or static file (starts with 'static/')
-                                if (strpos($imagePath, 'uploads/') === 0 || strpos($imagePath, 'static/') === 0) {
-                                    $displayPath = '/Art2Cart/' . $imagePath;
+                                if (strpos($imagePath, 'uploads/') === 0 || strpos($imagePath, 'static/') === 0) {                                $displayPath = $imagePath;
                                 } 
-                                // If it already starts with /Art2Cart/
+                                // If it already has full path, make it relative
                                 else if (strpos($imagePath, '/Art2Cart/') === 0) {
-                                    $displayPath = $imagePath;
+                                    $displayPath = substr($imagePath, 10); // Remove '/Art2Cart/' prefix
+                                }
+                                // If it has base URL, make it relative
+                                else if (strpos($imagePath, $baseHref) === 0) {
+                                    $displayPath = substr($imagePath, strlen($baseHref));
                                 }
                                 // Default fallback image
                                 else {
-                                    $displayPath = '/Art2Cart/static/images/products/sample.jpg';
+                                    $displayPath = 'static/images/products/sample.jpg';
                                 }
                                 ?>
                                 <img src="<?php echo htmlspecialchars($displayPath); ?>" 
                                      alt="<?php echo htmlspecialchars($item['product_name']); ?>">
-                            </div>
-                            <div class="item-details">
+                            </div>                            <div class="item-details">
                                 <h3 class="item-title"><?php echo htmlspecialchars($item['product_name']); ?></h3>
                                 <p class="item-artist">by <?php echo htmlspecialchars($item['seller_name']); ?></p>
                                 <div class="item-category <?php echo strtolower(str_replace(' ', '-', $item['category_slug'])); ?>">
                                     <?php echo htmlspecialchars($item['category_name']); ?>
-                                </div>
-                                <div class="item-controls">
-                                    <div class="quantity-controls">
-                                        <button class="quantity-btn minus" onclick="updateQuantity(<?php echo $item['product_id']; ?>, <?php echo $item['quantity'] - 1; ?>)">
-                                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-                                                <rect x="6" y="12" width="14" height="2" fill="#5A607F"/>
-                                            </svg>
-                                        </button>
-                                        <span class="quantity"><?php echo $item['quantity']; ?></span>
-                                        <button class="quantity-btn plus" onclick="updateQuantity(<?php echo $item['product_id']; ?>, <?php echo $item['quantity'] + 1; ?>)">
-                                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-                                                <rect x="6" y="12" width="14" height="2" fill="#5A607F"/>
-                                                <rect x="12" y="6" width="2" height="14" fill="#5A607F"/>
-                                            </svg>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="item-price">₱<?php echo number_format($item['price'], 2); ?></div>
@@ -105,11 +135,10 @@ $pageTitle = "Shopping Cart - Art2Cart";
 
                 <!-- Order Summary -->
                 <div class="order-summary">
-                    <h2>Order Summary</h2>
-                    <?php foreach ($cartItems as $item): ?>
+                    <h2>Order Summary</h2>                    <?php foreach ($cartItems as $item): ?>
                         <div class="summary-line" data-product-id="<?php echo $item['product_id']; ?>">
-                            <span><?php echo htmlspecialchars($item['product_name']); ?> (x<?php echo $item['quantity']; ?>)</span>
-                            <span>₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
+                            <span><?php echo htmlspecialchars($item['product_name']); ?></span>
+                            <span>₱<?php echo number_format($item['price'], 2); ?></span>
                         </div>
                     <?php endforeach; ?>
                     
@@ -130,56 +159,18 @@ $pageTitle = "Shopping Cart - Art2Cart";
                     </button>
                 </div>
             </div>
-        <?php endif; ?>
-    </main>
+        <?php endif; ?>    </main>
 
-    <?php include 'static/templates/footer_new.html'; ?>
+    <?php include 'static/templates/footer_new.php'; ?>
 
     <script>
-        // Update item quantity
-        function updateQuantity(productId, newQuantity) {
-            if (newQuantity < 1) {
-                removeFromCart(productId);
-                return;
-            }
-
-            fetch('/Art2Cart/api/cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `action=update&product_id=${productId}&quantity=${newQuantity}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update quantity display
-                    const cartItem = document.querySelector(`[data-product-id="${productId}"]`);
-                    const quantitySpan = cartItem.querySelector('.quantity');
-                    quantitySpan.textContent = newQuantity;
-                    
-                    // Update summary
-                    updateCartSummary();
-                    
-                    // Update header cart count if exists
-                    updateHeaderCartCount(data.cart_count);
-                } else {
-                    alert(data.message || 'Failed to update cart');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while updating the cart');
-            });
-        }
-
         // Remove item from cart
         function removeFromCart(productId) {
             if (!confirm('Are you sure you want to remove this item from your cart?')) {
                 return;
             }
 
-            fetch('/Art2Cart/api/cart.php', {
+            fetch('api/cart.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -217,21 +208,17 @@ $pageTitle = "Shopping Cart - Art2Cart";
                 console.error('Error:', error);
                 alert('An error occurred while removing the item');
             });
-        }
-
-        // Update cart summary totals
+        }        // Update cart summary totals
         function updateCartSummary() {
             let totalItems = 0;
             let totalAmount = 0;
 
             document.querySelectorAll('.cart-item').forEach(item => {
-                const productId = item.dataset.productId;
-                const quantity = parseInt(item.querySelector('.quantity').textContent);
                 const priceText = item.querySelector('.item-price').textContent;
                 const price = parseFloat(priceText.replace('₱', '').replace(',', ''));
                 
-                totalItems += quantity;
-                totalAmount += price * quantity;
+                totalItems += 1; // Each item counts as 1 in digital marketplace
+                totalAmount += price;
             });
 
             document.getElementById('total-items').textContent = totalItems;
@@ -244,16 +231,112 @@ $pageTitle = "Shopping Cart - Art2Cart";
             if (cartCountElement) {
                 cartCountElement.textContent = count;
             }
-        }
-
-        // Proceed to checkout
+        }        // Proceed to checkout
         function proceedToCheckout() {
-            window.location.href = '/Art2Cart/checkout.php';
+            const selectedItems = getSelectedItems();
+            if (selectedItems.length === 0) {
+                alert('Please select at least one item to checkout.');
+                return;
+            }
+            
+            // Store selected items in sessionStorage
+            sessionStorage.setItem('selectedCartItems', JSON.stringify(selectedItems));
+            window.location.href = 'checkout.php';
         }
 
-        // Initialize cart functionality
+        // Get selected item IDs
+        function getSelectedItems() {
+            const selectedCheckboxes = document.querySelectorAll('.item-select-checkbox:checked');
+            return Array.from(selectedCheckboxes).map(cb => parseInt(cb.dataset.productId));
+        }
+
+        // Toggle select all
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            const itemCheckboxes = document.querySelectorAll('.item-select-checkbox');
+            
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            
+            updateCartSelection();
+        }
+
+        // Update cart selection and visual feedback
+        function updateCartSelection() {
+            const selectedItems = getSelectedItems();
+            const totalItems = document.querySelectorAll('.item-select-checkbox').length;
+            
+            // Update select all checkbox state
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            selectAllCheckbox.checked = selectedItems.length === totalItems;
+            selectAllCheckbox.indeterminate = selectedItems.length > 0 && selectedItems.length < totalItems;
+            
+            // Update visual feedback for selected items
+            document.querySelectorAll('.cart-item').forEach(item => {
+                const productId = parseInt(item.dataset.productId);
+                const checkbox = item.querySelector('.item-select-checkbox');
+                
+                if (checkbox.checked) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            // Update order summary to show only selected items
+            updateOrderSummarySelection();
+        }
+
+        // Update order summary to reflect selected items
+        function updateOrderSummarySelection() {
+            const selectedItems = getSelectedItems();
+            let selectedTotal = 0;
+            let selectedCount = 0;
+            
+            // Show/hide summary lines based on selection
+            document.querySelectorAll('.summary-line[data-product-id]').forEach(line => {
+                const productId = parseInt(line.dataset.productId);
+                if (selectedItems.includes(productId)) {
+                    line.style.display = 'flex';
+                    // Get price from the line
+                    const priceText = line.querySelector('span:last-child').textContent;
+                    const price = parseFloat(priceText.replace('₱', '').replace(/,/g, ''));
+                    selectedTotal += price;
+                    selectedCount += 1;
+                } else {
+                    line.style.display = 'none';
+                }
+            });
+            
+            // Update totals
+            document.getElementById('total-items').textContent = selectedCount;
+            document.getElementById('cart-total').textContent = '₱' + selectedTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }        // Initialize cart functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Any additional initialization code
+            // Select all items by default
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = true;
+                toggleSelectAll();
+            }
+
+            // Add click event listeners to cart items
+            document.querySelectorAll('.cart-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on delete button or checkbox
+                    if (e.target.closest('.delete-btn') || e.target.closest('.item-checkbox')) {
+                        return;
+                    }
+                    
+                    // Toggle the checkbox
+                    const checkbox = this.querySelector('.item-select-checkbox');
+                    if (checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                        updateCartSelection();
+                    }
+                });
+            });
         });
     </script>
 </body>

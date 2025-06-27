@@ -1,9 +1,18 @@
 <?php
+session_start();
+$currentUserId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
 require_once 'config/db.php';
 require_once 'includes/products.php';
+require_once 'includes/Art2CartConfig.php';
+// ...existing code...
 
 // Initialize error reporting
 Database::initErrorReporting();
+
+// Get base URL configuration
+$baseHref = Art2CartConfig::getBaseUrl();
+$baseUrl = Art2CartConfig::getBaseUrl();
 
 // Get category slug from URL
 $categorySlug = isset($_GET['category']) ? $_GET['category'] : '';
@@ -21,7 +30,7 @@ if ($categorySlug) {
         $category = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($category) {
-            $products = getProductsByCategory($categorySlug);
+            $products = getProductsByCategory($categorySlug, $currentUserId);
         }
     } catch (PDOException $e) {
         error_log("Error fetching category: " . $e->getMessage());
@@ -49,15 +58,31 @@ $displayProducts = array_slice($products, $start, $productsPerPage);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title><?php echo htmlspecialchars($category['name']); ?> - Art2Cart</title>
 
-    <!-- Stylesheets -->
+    <!-- Base URL configuration -->
+    <base href="<?php echo htmlspecialchars($baseHref); ?>">    <!-- Stylesheets -->
     <link rel="stylesheet" href="static/css/catalogue/cata.css">
+    <link rel="stylesheet" href="static/css/template/header.css">
     <link rel="stylesheet" href="static/css/var.css" />
-    <link rel="stylesheet" href="static/css/fonts.css" />
-
-    <!-- Favicons (same as catalogue.php) -->
+    <link rel="stylesheet" href="static/css/fonts.css" /><!-- Favicons (same as catalogue.php) -->
     <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="96x96" href="static/images/favicon/favicon-96x96.png">
+    
+    <!-- ICO fallback for older browsers -->
+    <link rel="shortcut icon" href="static/images/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- Apple Touch Icon (iOS/iPadOS) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicon/apple-touch-icon.png">
+
+    <!-- Android/Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="static/images/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="static/images/favicon/android-chrome-512x512.png">
+
+    <!-- Web Manifest for PWA support -->
+    <link rel="manifest" href="static/images/favicon/site.webmanifest">
+
+    <!-- Optional theme color -->
+    <meta name="theme-color" content="#ffffff">
 </head>
 <body>
     <!-- Container for header -->
@@ -120,33 +145,34 @@ $displayProducts = array_slice($products, $start, $productsPerPage);
                 <?php endif; ?>
             </div>
         </section>
-    </main>
-
-    <div id="footer"></div>
+    </main>    <div id="footer"></div>
+    <script>
+        // Pass PHP base URL to JavaScript
+        window.baseHref = '<?php echo $baseHref; ?>';
+    </script>
     <script src="static/js/load.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    <script>        document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function() {
                     const productId = this.getAttribute('data-product-id');
                     addToCart(productId);
                 });
             });
-        });        function changePage(pageNumber) {
+        });
+        
+        function changePage(pageNumber) {
             const url = new URL(window.location.href);
             url.searchParams.set('page', pageNumber);
             window.location.href = url.toString();
-        }
-
-        // Function to redirect to product preview page
+        }        // Function to redirect to product preview page
         function viewProduct(productId) {
-            window.location.href = `/Art2Cart/product_preview.php?id=${productId}`;
+            window.location.href = `product_preview.php?id=${productId}`;
         }
 
         function addToCart(productId) {
             // Check if user is logged in
-            fetch('/Art2Cart/api/cart.php', {
+            fetch('api/cart.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -161,10 +187,9 @@ $displayProducts = array_slice($products, $start, $productsPerPage);
                     
                     // Update cart count in header if exists
                     updateHeaderCartCount(data.cart_count);
-                } else {
-                    if (data.message.includes('log in')) {
+                } else {                    if (data.message.includes('log in')) {
                         // Redirect to login if not logged in
-                        window.location.href = '/Art2Cart/auth/auth.html';
+                        window.location.href = 'auth/auth.html';
                     } else {
                         showNotification(data.message || 'Failed to add item to cart', 'error');
                     }

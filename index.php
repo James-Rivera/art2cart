@@ -1,9 +1,36 @@
+<?php
+session_start();
+require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/includes/User.php';
+require_once __DIR__ . '/includes/Art2CartConfig.php';
+
+$baseHref = Art2CartConfig::getBaseUrl();
+
+// Check user authentication and role
+$isLoggedIn = isset($_SESSION['user_id']);
+$userRoles = [];
+$isSellerApproved = false;
+
+if ($isLoggedIn) {
+    try {
+        $user = new User($_SESSION['user_id']);
+        $userInfo = $user->getProfileInfo();
+        $userRoles = $userInfo['roles'] ?? [];
+        $isSellerApproved = in_array('seller', $userRoles);
+    } catch (Exception $e) {
+        // Handle case where user data might be corrupted
+        $isLoggedIn = false;
+        session_destroy();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Art2Cart - Digital Art Marketplace" />
+    <?php Art2CartConfig::echoBaseHref(); ?>
     <title>Art 2 Cart</title>
 
     <!-- Stylesheets -->
@@ -44,8 +71,29 @@
       <!-- Load Scripts -->
       <script>
         window.isIndexPage = true;
+        window.baseHref = "<?php echo $baseHref; ?>";
+        
+        // User authentication and role status
+        window.userStatus = {
+            isLoggedIn: <?php echo $isLoggedIn ? 'true' : 'false'; ?>,
+            isSellerApproved: <?php echo $isSellerApproved ? 'true' : 'false'; ?>
+        };
+        
+        // Smart redirect function for Start Selling button
+        function handleStartSelling() {
+            if (!window.userStatus.isLoggedIn) {
+                // Not logged in -> redirect to auth
+                window.location.href = 'auth/auth.html';
+            } else if (window.userStatus.isSellerApproved) {
+                // Already a seller -> redirect to seller dashboard
+                window.location.href = 'seller/dashboard.php';
+            } else {
+                // Logged in as buyer -> redirect to become seller
+                window.location.href = 'auth/become_seller.php';
+            }
+        }
       </script>
-      <script src="static/js/load.js"></script>
+      <script src="static/js/load.js?v=<?php echo time(); ?>"></script>
       <script src="static/js/main.js"></script>
 
       <!-- Hero Section -->
@@ -66,7 +114,7 @@
             <a href="catalogue.php" class="buttons">
               <span class="large">Explore Products</span>
             </a>
-            <a href="/sell" class="buttons2">
+            <a href="#" class="buttons2" onclick="handleStartSelling(); return false;">
               <span class="large">Start Selling</span>
             </a>
           </div>
@@ -316,7 +364,7 @@
           <!-- Company Info -->
           <div class="frame-51">
             <div class="frame-50">
-              <a href="/" class="art-2-cart">
+              <a href="<?php echo $baseHref; ?>" class="art-2-cart">
                 <img
                   class="image-1"
                   src="static/images/logo.png"
@@ -370,10 +418,10 @@
           <div class="frame-47">
             <h3 class="help-menu">COMPANY</h3>
             <ul class="about-features-works">
-              <li><a href="/about">About</a></li>
-              <li><a href="/products">Products</a></li>
-              <li><a href="/">Home</a></li>
-              <li><a href="/creator">Creator</a></li>
+              <li><a href="about">About</a></li>
+              <li><a href="products">Products</a></li>
+              <li><a href="<?php echo $baseHref; ?>">Home</a></li>
+              <li><a href="creator">Creator</a></li>
             </ul>
           </div>
 
@@ -381,10 +429,10 @@
           <div class="frame-48">
             <h3 class="help-menu">HELP</h3>
             <ul class="about-features-works2">
-              <li><a href="/support">Customer Support</a></li>
-              <li><a href="/delivery">Delivery Details</a></li>
-              <li><a href="/terms">Terms & Conditions</a></li>
-              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="support">Customer Support</a></li>
+              <li><a href="delivery">Delivery Details</a></li>
+              <li><a href="terms">Terms & Conditions</a></li>
+              <li><a href="privacy">Privacy Policy</a></li>
             </ul>
           </div>
 
@@ -392,10 +440,10 @@
           <div class="frame-522">
             <h3 class="help-menu">FAQ</h3>
             <ul class="about-features-works3">
-              <li><a href="/account">Account</a></li>
-              <li><a href="/deliveries">Manage Deliveries</a></li>
-              <li><a href="/orders">Orders</a></li>
-              <li><a href="/payments">Payments</a></li>
+              <li><a href="account">Account</a></li>
+              <li><a href="deliveries">Manage Deliveries</a></li>
+              <li><a href="orders">Orders</a></li>
+              <li><a href="payments">Payments</a></li>
             </ul>
           </div>
 
@@ -413,8 +461,8 @@
                   >Figmal</a
                 >
               </li>
-              <li><a href="/how-to-sell">How to Sell</a></li>
-              <li><a href="/guidelines">Guidelines</a></li>
+              <li><a href="how-to-sell">How to Sell</a></li>
+              <li><a href="guidelines">Guidelines</a></li>
             </ul>
           </div>
         </div>

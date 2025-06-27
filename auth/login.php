@@ -1,5 +1,6 @@
 <?php
 require_once '../config/db.php';
+require_once '../includes/Art2CartConfig.php';
 
 header('Content-Type: application/json');
 
@@ -39,13 +40,15 @@ try {
         FROM roles r
         JOIN user_roles ur ON r.id = ur.role_id
         WHERE ur.user_id = ?
-    ");
-    $stmt->execute([$user['id']]);
+    ");    $stmt->execute([$user['id']]);
     $roles = $stmt->fetchAll(PDO::FETCH_COLUMN);
     
-    $redirectUrl = '/Art2Cart/';
+    // Get dynamic base URL
+    $baseUrl = Art2CartConfig::getBaseUrl();
+    
+    $redirectUrl = $baseUrl;
     if (in_array('admin', $roles)) {
-        $redirectUrl = '/Art2Cart/admin/admin_dashboard.php';
+        $redirectUrl = $baseUrl . 'admin/admin_dashboard.php';
     }
 
     echo json_encode([

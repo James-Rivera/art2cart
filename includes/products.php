@@ -10,12 +10,11 @@ class ProductService {
         try {
             error_log("Attempting to fetch products for category: " . $categorySlug);
             
-            $sql = "
-                SELECT 
+            $sql = "                SELECT 
                     p.id,
                     p.title,
                     p.price,
-                    CONCAT('/Art2Cart/', p.image_path) as image,
+                    p.image_path as image,
                     p.downloads,
                     u.username as seller_name,
                     COALESCE(AVG(r.rating), 0) as rating
@@ -55,13 +54,12 @@ class ProductService {
     public function getPurchasedProducts($userId) {
         try {
             error_log("Fetching purchased products for user: " . $userId);
-            
-            $stmt = $this->db->prepare("
+              $stmt = $this->db->prepare("
                 SELECT DISTINCT
                     p.id,
                     p.title,
                     p.price,
-                    CONCAT('/Art2Cart/', p.image_path) as image,
+                    p.image_path as image,
                     p.file_path,
                     p.downloads,
                     u.username as seller_name,
@@ -87,9 +85,7 @@ class ProductService {
             error_log("Error fetching purchased products: " . $e->getMessage());
             return [];
         }
-    }
-
-    public function getProductById($productId) {
+    }    public function getProductById($productId) {
         try {
             $stmt = $this->db->prepare("
                 SELECT 
@@ -101,6 +97,7 @@ class ProductService {
                     p.image_path,
                     p.file_path,
                     p.created_at,
+                    p.status,
                     c.name as category_name,
                     c.slug as category_slug,
                     u.username as seller_name,
@@ -111,7 +108,7 @@ class ProductService {
                 JOIN categories c ON p.category_id = c.id
                 JOIN users u ON p.seller_id = u.id
                 LEFT JOIN ratings r ON p.id = r.product_id
-                WHERE p.id = ? AND p.status = 'active'
+                WHERE p.id = ? AND (LOWER(TRIM(p.status)) = 'active' OR TRIM(p.status) = 'Active')
                 GROUP BY p.id
             ");
             $stmt->execute([$productId]);
@@ -120,9 +117,7 @@ class ProductService {
             error_log("Error fetching product by ID: " . $e->getMessage());
             return null;
         }
-    }
-
-    public function getProductRatings($productId) {
+    }public function getProductRatings($productId) {
         try {
             // Get rating breakdown
             $stmt = $this->db->prepare("
@@ -173,6 +168,29 @@ class ProductService {
         }
     }
 
+    public function getProductReviews($productId, $limit = 10, $offset = 0) {
+        try {
+            $stmt = $this->db->prepare("
+                SELECT 
+                    r.rating,
+                    r.comment,
+                    r.created_at,
+                    u.username,
+                    u.id as user_id
+                FROM ratings r
+                JOIN users u ON r.user_id = u.id
+                WHERE r.product_id = ?
+                ORDER BY r.created_at DESC
+                LIMIT ? OFFSET ?
+            ");
+            $stmt->execute([$productId, $limit, $offset]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error fetching product reviews: " . $e->getMessage());
+            return [];
+        }
+    }
+
     public function getUserRating($productId, $userId) {
         try {
             $stmt = $this->db->prepare("
@@ -186,9 +204,7 @@ class ProductService {
             error_log("Error fetching user rating: " . $e->getMessage());
             return null;
         }
-    }
-
-    public function submitRating($productId, $userId, $rating, $comment = null) {
+    }    public function submitRating($productId, $userId, $rating, $comment = null) {
         try {
             $stmt = $this->db->prepare("
                 INSERT INTO ratings (product_id, user_id, rating, comment)
@@ -205,15 +221,127 @@ class ProductService {
         }
     }
 
+    public function getUserRatings($userId) {
+        try {
+            $stmt = $this->db->prepare("
+                SELECT 
+                    r.id,
+                    r.product_id,
+                    r.rating,
+                    r.comment,
+                    r.created_at,
+                    p.title as product_title,
+                    p.image_path,
+                    p.price
+                FROM ratings r
+                JOIN products p ON r.product_id = p.id
+                WHERE r.user_id = ?
+                ORDER BY r.created_at DESC
+            ");
+            $stmt->execute([$userId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error fetching user ratings: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function deleteUserRating($ratingId, $userId) {
+        try {
+            $stmt = $this->db->prepare("
+                DELETE FROM ratings 
+                WHERE id = ? AND user_id = ?
+            ");
+            return $stmt->execute([$ratingId, $userId]);
+        } catch (PDOException $e) {
+            error_log("Error deleting rating: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function updateUserRating($ratingId, $userId, $rating, $comment = null) {
+        try {
+            // Verify the rating belongs to the user
+            $stmt = $this->db->prepare("
+                SELECT id FROM ratings 
+                WHERE id = ? AND user_id = ?
+            ");
+            $stmt->execute([$ratingId, $userId]);
+            
+            if (!$stmt->fetch()) {
+                return false; // Rating doesn't exist or doesn't belong to user
+            }
+            
+            // Update the rating
+            $stmt = $this->db->prepare("
+                UPDATE ratings 
+                SET rating = ?, comment = ?, created_at = CURRENT_TIMESTAMP
+                WHERE id = ? AND user_id = ?
+            ");
+            return $stmt->execute([$rating, $comment, $ratingId, $userId]);
+        } catch (PDOException $e) {
+            error_log("Error updating rating: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getPurchasedProductById($productId, $userId) {
+        try {
+            // First verify the user has purchased this product
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) as count 
+                FROM order_items oi 
+                JOIN orders o ON oi.order_id = o.id 
+                WHERE o.user_id = ? AND oi.product_id = ? AND o.status = 'completed'
+            ");
+            $stmt->execute([$userId, $productId]);
+            $hasPurchased = $stmt->fetch()['count'] > 0;
+            
+            if (!$hasPurchased) {
+                return null; // User hasn't purchased this product
+            }
+            
+            // Get product details without status restriction for purchased products
+            $stmt = $this->db->prepare("
+                SELECT 
+                    p.id,
+                    p.title,
+                    p.description,
+                    p.price,
+                    p.downloads,
+                    p.image_path,
+                    p.file_path,
+                    p.created_at,
+                    p.status,
+                    c.name as category_name,
+                    c.slug as category_slug,
+                    u.username as seller_name,
+                    u.id as seller_id,
+                    COALESCE(AVG(r.rating), 0) as rating,
+                    COUNT(r.id) as rating_count
+                FROM products p
+                JOIN categories c ON p.category_id = c.id
+                JOIN users u ON p.seller_id = u.id
+                LEFT JOIN ratings r ON p.id = r.product_id
+                WHERE p.id = ?
+                GROUP BY p.id
+            ");
+            $stmt->execute([$productId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error fetching purchased product by ID: " . $e->getMessage());
+            return null;
+        }
+    }
+
     // Keeping the dummy data for testing purposes
     private function getDummyProducts($category) {
         // Dummy data for testing
         $products = [
-            'digital-art' => [
-                [
+            'digital-art' => [                [
                     'id' => 1,                    'title' => 'Mob Ultra Sonic',
                     'price' => 25.99,
-                    'image' => '/Art2Cart/static/images/products/sample.jpg',
+                    'image' => 'static/images/products/sample.jpg',
                     'seller_name' => 'Jim Lee',
                     'rating' => 4.5,
                     'downloads' => 123

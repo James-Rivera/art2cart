@@ -1,18 +1,23 @@
 <?php
 require_once '../config/db.php';
 require_once '../includes/User.php';
+require_once '../includes/Art2CartConfig.php';
 
 session_start();
 
+// Get base URL configuration
+$baseHref = Art2CartConfig::getBaseUrl();
+$baseUrl = Art2CartConfig::getBaseUrl();
+
 // Check if user is logged in and has seller role
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /Art2Cart/auth/auth.html');
+    header('Location: ' . $baseUrl . 'auth/auth.html');
     exit;
 }
 
 $user = new User($_SESSION['user_id']);
 if (!$user->hasRole('seller')) {
-    header('Location: /Art2Cart/auth/become_seller.html');
+    header('Location: ' . $baseUrl . 'auth/become_seller.php');
     exit;
 }
 
@@ -27,15 +32,48 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>    <meta charset="UTF-8">
+<head>    
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Dashboard - Art2Cart</title>    <link rel="stylesheet" href="/Art2Cart/static/css/var.css">
-    <link rel="stylesheet" href="/Art2Cart/static/css/fonts.css">
-    <link rel="stylesheet" href="/Art2Cart/static/css/seller/dashboard.css">
+    <title>Seller Dashboard - Art2Cart</title>
+    
+    <!-- Base URL configuration -->
+    <base href="<?php echo htmlspecialchars($baseHref); ?>">
+    
+    <!-- Standard favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="static/images/favicon/favicon-96x96.png">
+    
+    <!-- ICO fallback for older browsers -->
+    <link rel="shortcut icon" href="static/images/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- Apple Touch Icon (iOS/iPadOS) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicon/apple-touch-icon.png">
+
+    <!-- Android/Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="static/images/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="static/images/favicon/android-chrome-512x512.png">
+
+    <!-- Web Manifest for PWA support -->
+    <link rel="manifest" href="static/images/favicon/site.webmanifest">    <!-- Optional theme color -->
+    <meta name="theme-color" content="#ffffff">
+    
+    <link rel="stylesheet" href="static/css/var.css">
+    <link rel="stylesheet" href="static/css/fonts.css">
+    <link rel="stylesheet" href="static/css/template/header.css">
+    <link rel="stylesheet" href="static/css/seller/dashboard.css">
     
 </head>
 <body>
-    <?php include '../static/templates/header_new.php'; ?>
+    <!-- Header will be loaded dynamically -->
+    <div id="header"></div>
+
+    <script>
+        // Pass PHP base URL to JavaScript  
+        window.baseHref = '<?php echo $baseHref; ?>';
+    </script>
+    <script src="<?php echo $baseHref; ?>static/js/load.js"></script>
 
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -77,7 +115,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php else: ?>                <?php foreach ($products as $product): ?>
                     <article class="product-card" data-status="<?php echo $product['status']; ?>" data-product-id="<?php echo $product['id']; ?>">                        <div class="product-image-container">
                             <img class="product-image" 
-                                src="<?php echo htmlspecialchars('/Art2Cart/' . $product['image_path']); ?>" 
+                                src="<?php echo htmlspecialchars($baseHref . $product['image_path']); ?>" 
                                 alt="<?php echo htmlspecialchars($product['title']); ?>">
                             <span class="product-status status-<?php echo $product['status']; ?>">
                                 <?php echo ucfirst($product['status']); ?>
@@ -275,9 +313,8 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     }
                     if (productFile) {
                         if (productFile.size > 100 * 1024 * 1024) throw new Error('Product file size must be less than 100MB');
-                        formData.append('file', productFile);
-                    }
-                }const response = await fetch('/Art2Cart/seller/upload_product.php', {
+                        formData.append('file', productFile);                    }
+                }const response = await fetch(window.baseHref + 'seller/upload_product.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -322,7 +359,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (!confirm(`Are you sure you want to ${newStatus === 'active' ? 'activate' : 'deactivate'} this product?`)) {
                 return;
             }            try {
-                const response = await fetch('/Art2Cart/seller/update_status.php', {
+                const response = await fetch(window.baseHref + 'seller/update_status.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -370,7 +407,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
 
             try {
-                const response = await fetch('/Art2Cart/seller/delete_product.php', {
+                const response = await fetch(window.baseHref + 'seller/delete_product.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

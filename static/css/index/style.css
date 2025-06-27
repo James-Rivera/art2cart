@@ -90,7 +90,7 @@ main {
 /* Hero Section */
 .hero {
   width: 100%;
-  min-height: 100vh;
+  min-height: 115vh;
   position: relative;
   background-color: #2d3748;
   background-image: url('../../../static/images/hero.png');
@@ -102,6 +102,7 @@ main {
   padding: 140px 50px 50px;
   box-sizing: border-box;
   margin-top: -86px;
+  transition: background-color 0.3s ease, background-image 0.3s ease;
 }
 
 /* Featured Section */
@@ -309,7 +310,7 @@ main {
   z-index: 4;
   opacity: 0.01;  /* Nearly invisible by default */
   transition: all 0.3s ease;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
+  /*background: linear-gradient(to top, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);*/
   padding-top: 40px;
 }
 
@@ -854,15 +855,16 @@ main {
 }
 
 .text8 {
-  display: flex;
-  flex-direction: column;
-  gap: 21px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 466px;
-  position: absolute;
-  left: 122px;
-  top: 237px;
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 466px;
+    position: absolute;
+    left: 122px;
+    top: 277px;
+    margin: auto;
 }
 
 .text9 {
@@ -875,6 +877,7 @@ main {
 .earth-without-art-is-just-eh {
   color: #ffffff;
   text-align: left;
+  font-style: italic;
   font-family: var(--font-inter);
   font-size: 20px;
   line-height: 1.5;
@@ -942,8 +945,8 @@ main {
 
 .button {
   flex-shrink: 0;
-  width: 335px;
-  height: 40px;
+  width: 400px;
+  height: 68px;
   position: relative;
   display: flex;
   gap: 16px;
@@ -952,6 +955,7 @@ main {
 
 .buttons {
   background: #e9c319;
+  border: 2px solid #e9c319;
   border-radius: 1000px;
   padding: 14px 24px;
   display: flex;
@@ -965,6 +969,8 @@ main {
   top: 10px;
   overflow: hidden;
   text-decoration: none;
+  width: auto;
+  min-width: 160px;
 }
 
 .large {
@@ -980,6 +986,7 @@ main {
 
 .buttons2 {
   background: #ffffff;
+  border: 2px solid #e9c319;
   border-radius: 1000px;
   padding: 14px 24px;
   display: flex;
@@ -991,8 +998,12 @@ main {
   position: absolute;
   left: 10px;
   top: 10px;
+  width: auto;
+  min-width: 160px;
   overflow: hidden;
   text-decoration: none;
+  width: auto;
+  min-width: 160px;
 }
 
 .logo2 {
@@ -1759,8 +1770,286 @@ main {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
-  width: 79px;
+  transform: translate(-50%, -50%);  width: 79px;
   height: 79px;
   border-radius: 50%;
 }
+
+/* Smooth transitions for dark mode theme switching */
+body,
+.main-page,
+.hero,
+.featured,
+.container2,
+.product-card,
+.hover-content,
+.artists-section,
+.artist-card,
+.artist-details,
+.products,
+.digital-art,
+.photography,
+.illustrations,
+.templates,
+._3-d-models,
+.assets,
+.footer,
+.painting,
+.never-stop,
+.premium-digital-products,
+.featured-products,
+.treating-all-skin-co2,
+.product-title,
+.rating-score,
+.downloads,
+.price,
+.product-artist,
+.product-price,
+.our-digital-products,
+.treating-all-skin-co,
+.digital-art2,
+.photography2,
+.illustrations2,
+.templates2,
+._3-d-models2,
+.assets2,
+._1250-products,
+._458-products,
+._324-products,
+._234-products,
+._89-943-products,
+.text2,
+.text3,
+.text4,
+.text5,
+.text6,
+.text7,
+.art-2-cart-span,
+.art-2-cart-span3,
+.we-have-clothes-that-suits-your-style-and-which-you-re-proud-to-wear-from-women-to-men,
+.help-menu,
+.about-features-works li a,
+.about-features-works2 li a,
+.about-features-works3 li a,
+.about-features-works4 li a,
+._2025-art-2-cart-all-rights-reverved {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dark Mode Styles for Homepage */
+[data-theme="dark"] body,
+[data-theme="dark"] .main-page {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Hero Section Dark Mode */
+[data-theme="dark"] .hero {
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(var(--hero-overlay), var(--hero-overlay)),
+    url('../../../static/images/hero.png');
+  transition: background-color 0.3s ease, background-image 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+[data-theme="dark"] .text8 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .painting {
+    color: #ffd700;
+}
+
+[data-theme="dark"] .never-stop {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .premium-digital-products {
+    color: #000;
+}
+
+/* Featured Section Dark Mode */
+[data-theme="dark"] .featured {
+  background: var(--bg-primary);
+}
+
+[data-theme="dark"] .featured-products {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .treating-all-skin-co2 {
+  color: var(--text-secondary);
+}
+
+/* Product Cards Dark Mode */
+[data-theme="dark"] .product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+[data-theme="dark"] .product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px var(--shadow-medium);
+}
+
+[data-theme="dark"] .product-title {
+    color: #000000;
+}
+
+[data-theme="dark"] .product-artist {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .product-price {
+  color: var(--accent-1);
+}
+
+/* Product Categories Dark Mode */
+[data-theme="dark"] .products {
+  background: var(--bg-primary);
+}
+
+[data-theme="dark"] .our-digital-products {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .treating-all-skin-co {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .digital-art,
+[data-theme="dark"] .photography,
+[data-theme="dark"] .illustrations,
+[data-theme="dark"] .ui-ux,
+[data-theme="dark"] .templates,
+[data-theme="dark"] ._3-d-models,
+[data-theme="dark"] .assets {
+  background: var(--card-bg);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+[data-theme="dark"] .digital-art:hover,
+[data-theme="dark"] .photography:hover,
+[data-theme="dark"] .illustrations:hover,
+[data-theme="dark"] .ui-ux:hover,
+[data-theme="dark"] .templates:hover,
+[data-theme="dark"] ._3-d-models:hover,
+[data-theme="dark"] .assets:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px var(--shadow-medium);
+}
+
+[data-theme="dark"] .digital-art2,
+[data-theme="dark"] .photography2,
+[data-theme="dark"] .illustrations2,
+[data-theme="dark"] .ui-ux2,
+[data-theme="dark"] .templates2,
+[data-theme="dark"] ._3-d-models2,
+[data-theme="dark"] .assets2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] ._1250-products,
+[data-theme="dark"] ._458-products,
+[data-theme="dark"] ._324-products,
+[data-theme="dark"] ._234-products,
+[data-theme="dark"] ._89-943-products {
+  color: var(--text-secondary);
+}
+
+/* Featured Artists Dark Mode */
+[data-theme="dark"] .featured-artists {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .featured-artists-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .artist-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+[data-theme="dark"] .artist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px var(--shadow-medium);
+}
+
+[data-theme="dark"] .artist-name {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .artist-title {
+  color: var(--text-secondary);
+}
+
+/* Buttons Dark Mode */
+[data-theme="dark"] .buttons {
+  background: var(--accent-1) !important;
+  color: #000 !important;
+  border: 2px solid var(--accent-1) !important;
+  height: 48px !important;
+  padding: 14px 24px !important;
+  border-radius: 1000px !important;
+  left: 0px !important;
+  width: auto !important;
+  min-width: 160px !important;
+}
+
+[data-theme="dark"] .buttons2 {
+  color: #000 !important;
+  border: 2px solid var(--accent-1) !important;
+  height: 48px !important;
+  padding: 14px 24px !important;
+  border-radius: 1000px !important;
+  left: 10px !important;
+  width: auto !important;
+  min-width: 160px !important;
+}
+
+[data-theme="dark"] .buttons:hover,
+[data-theme="dark"] .buttons2:hover {
+  background: #e6c200 !important;
+  border-color: #e6c200 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+/* Navigation Dots Dark Mode */
+[data-theme="dark"] .nav-dot {
+  background: var(--border-secondary);
+}
+
+[data-theme="dark"] .nav-dot.active {
+  background: var(--accent-1);
+}
+
+/* Ellipse backgrounds Dark Mode - Preserve individual colors */
+[data-theme="dark"] .ellipse-12 {
+  background: #e74c3c; /* Darker red for better contrast */
+}
+
+[data-theme="dark"] .ellipse-122 {
+  background: #27ae60; /* Darker green for better contrast */
+}
+
+[data-theme="dark"] .ellipse-123 {
+  background: #3498db; /* Darker blue for better contrast */
+}
+
+[data-theme="dark"] .ellipse-124 {
+  background: #f1c40f; /* Golden yellow */
+}
+
+[data-theme="dark"] .ellipse-125 {
+  background: #9b59b6; /* Darker purple for better contrast */
+}
+
+[data-theme="dark"] .ellipse-126 {
+  background: #f1c40f; /* Golden yellow for assets */
+}
+

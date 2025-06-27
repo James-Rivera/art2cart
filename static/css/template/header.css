@@ -350,6 +350,9 @@
   color: #333;
   border-radius: 6px;
   transition: background-color 0.2s;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .dropdown-item:hover {
@@ -482,4 +485,158 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Dark Mode Toggle Styles */
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 2px solid var(--border-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  margin-left: 12px;
+}
+
+.dark-mode-toggle:hover {
+  border-color: var(--accent-1);
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.dark-mode-toggle svg {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    transition: all 0.3s ease;
+    color: #ffed4e;
+}
+.dark-mode-toggle .sun-icon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.dark-mode-toggle .moon-icon {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+/* Dark Mode Global Styles */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+
+/* Dark Mode Header Styles */
+[data-theme="dark"] .header-bar {
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom-color: var(--border-primary);
+}
+
+[data-theme="dark"] .header-colored {
+  background: var(--bg-secondary);
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .cultured-kid-span {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .cultured-kid-span2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .nav .paintings,
+[data-theme="dark"] .nav .sculpture-copy-2,
+[data-theme="dark"] .nav .artists {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .nav .paintings:hover,
+[data-theme="dark"] .nav .sculpture-copy-2:hover,
+[data-theme="dark"] .nav .artists:hover {
+  color: var(--accent-1);
+}
+
+[data-theme="dark"] .account-dropdown {
+  background: var(--card-bg);
+  border-color: var(--border-primary);
+  box-shadow: 0 4px 20px var(--shadow-heavy);
+}
+
+[data-theme="dark"] .user-profile {
+  border-bottom-color: var(--border-primary);
+}
+
+[data-theme="dark"] .user-name {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .user-email {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .user-role {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* Dark Mode Dropdown Icon Styles */
+[data-theme="dark"] .dropdown-item img {
+  filter: brightness(0) invert(1);
+}
+
+[data-theme="dark"] .dropdown-item:hover img {
+  filter: brightness(0) invert(1) brightness(1.2);
+}
+
+[data-theme="dark"] .dropdown-divider {
+  border-color: var(--border-primary);
+}
+
+[data-theme="dark"] .button2 {
+  background: var(--accent-1);
+  color: #000;
+}
+
+[data-theme="dark"] .button2:hover {
+  background: #e6c200;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+[data-theme="dark"] .cart-count {
+  color: var(--accent-1);
+}
+
+/* Dark Mode Toggle States */
+[data-theme="dark"] .dark-mode-toggle .sun-icon {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+[data-theme="dark"] .dark-mode-toggle .moon-icon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+[data-theme="dark"] .dark-mode-toggle {
+  border-color: var(--border-secondary);
+}
+
+[data-theme="dark"] .dark-mode-toggle:hover {
+  border-color: var(--accent-1);
+  background: rgba(255, 215, 0, 0.1);
 }

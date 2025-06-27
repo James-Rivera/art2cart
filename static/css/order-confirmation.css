@@ -107,6 +107,7 @@
   /* Main Content Styles */
   .main-content {
     padding: 40px 0;
+    margin-top: 50px;
     background-color: #fff;
     background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23f3f4f6' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
   }
@@ -421,6 +422,237 @@
     color: #cbd5e1;
   }
   
+  /* Dark Mode Styles */
+  [data-theme="dark"] body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+  
+  /* Header Dark Mode */
+  [data-theme="dark"] .header {
+    background-color: var(--bg-secondary);
+  }
+  
+  /* Main Content Dark Mode */
+  [data-theme="dark"] .main-content {
+    background-color: var(--bg-primary);
+  }
+  
+  [data-theme="dark"] .order-confirmation-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    box-shadow: 0 4px 20px var(--shadow-medium);
+  }
+  
+  [data-theme="dark"] .confirmation-title {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .confirmation-message {
+    color: var(--text-secondary);
+  }
+  
+  /* Order Sections Dark Mode */
+  [data-theme="dark"] .order-confirmation-section,
+  [data-theme="dark"] .item-purchase-section,
+  [data-theme="dark"] .order-summary-section {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+  }
+  
+  [data-theme="dark"] .billing-info-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    box-shadow: 0 2px 10px var(--shadow-light);
+  }
+  
+  [data-theme="dark"] .section-header {
+    border-bottom: 1px solid var(--border-primary);
+  }
+  
+  [data-theme="dark"] .section-header h2 {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .section-header i {
+    color: var(--text-secondary);
+  }
+  
+  /* Order Info Dark Mode */
+  [data-theme="dark"] .order-info-label {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .order-info-value {
+    color: var(--text-primary);
+  }
+  
+  /* Billing Info Dark Mode */
+  [data-theme="dark"] .billing-info-section h3 {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .billing-info-label {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .billing-info-value {
+    color: var(--text-primary);
+  }
+  
+  /* Purchase Items Dark Mode */
+  [data-theme="dark"] .purchase-item {
+    border-bottom: 1px solid var(--border-primary);
+  }
+  
+  [data-theme="dark"] .item-title {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .item-artist,
+  [data-theme="dark"] .item-quantity {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .item-price {
+    color: var(--accent-1);
+  }
+  
+  /* Download Button Dark Mode */
+  [data-theme="dark"] .download-btn {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .download-btn:hover {
+    background-color: var(--bg-secondary);
+  }
+  
+  /* Summary Dark Mode */
+  [data-theme="dark"] .summary-title {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .summary-label {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .summary-value {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .total-row {
+    border-top: 1px solid var(--border-primary);
+  }
+  
+  [data-theme="dark"] .total-row .summary-label,
+  [data-theme="dark"] .total-row .summary-value {
+    color: var(--text-primary);
+  }
+  
+  /* Action Buttons Dark Mode */
+  [data-theme="dark"] .download-all-btn {
+    background-color: var(--accent-1);
+    color: var(--text-contrast);
+  }
+  
+  [data-theme="dark"] .download-all-btn:hover {
+    background-color: var(--accent-2);
+  }
+  
+  [data-theme="dark"] .continue-shopping-btn {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .continue-shopping-btn:hover {
+    background-color: var(--bg-primary);
+  }
+  
+  /* Help Text Dark Mode */
+  [data-theme="dark"] .help-text {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .support-link {
+    color: var(--accent-1);
+  }
+  
+  [data-theme="dark"] .support-link:hover {
+    color: var(--accent-2);
+  }
+  
+  /* Footer Dark Mode */
+  [data-theme="dark"] .footer {
+    background-color: var(--bg-secondary);
+  }
+  
+  [data-theme="dark"] .footer-description {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .footer-heading {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .footer-column ul li a {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .footer-column ul li a:hover {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .copyright {
+    color: var(--text-secondary);
+  }
+  
+  /* Status Badges Dark Mode */
+  [data-theme="dark"] .status-completed {
+    background: #065F46;
+    color: #D1FAE5;
+  }
+  
+  [data-theme="dark"] .status-pending {
+    background: #92400E;
+    color: #FEF3C7;
+  }
+  
+  [data-theme="dark"] .status-cancelled {
+    background: #991B1B;
+    color: #FEE2E2;
+  }
+  
+  /* Payment Method Badge Dark Mode */
+  [data-theme="dark"] .payment-method-badge {
+    background: var(--accent-1);
+    color: var(--text-contrast);
+  }
+  
+  /* Error States Dark Mode */
+  [data-theme="dark"] .order-error {
+    background: var(--bg-secondary);
+    border: 1px solid var(--accent-2);
+    color: var(--accent-2);
+  }
+  
+  [data-theme="dark"] .order-warning {
+    background: var(--bg-secondary);
+    border: 1px solid var(--accent-1);
+    color: var(--accent-1);
+  }
+  
+  /* Checkmark Icon Dark Mode */
+  [data-theme="dark"] .checkmark-icon {
+    background-color: var(--supporting-1-transparent);
+  }
+  
+  [data-theme="dark"] .checkmark-icon i {
+    color: var(--supporting-1);
+  }
+  
   /* Responsive Styles */
   @media (max-width: 768px) {
     .order-details-container {
@@ -466,4 +698,3 @@
       width: 100%;
     }
   }
-  

@@ -40,7 +40,8 @@ try {
     }
 
     // Hash password and create user
-    $password_hash = password_hash($data['password'], PASSWORD_BCRYPT);    $stmt = $db->prepare('INSERT INTO users (username, email, first_name, last_name, password_hash) VALUES (?, ?, ?, ?, ?)');
+    $password_hash = password_hash($data['password'], PASSWORD_BCRYPT);    
+    $stmt = $db->prepare('INSERT INTO users (username, email, first_name, last_name, password_hash) VALUES (?, ?, ?, ?, ?)');
     $stmt->execute([$data['username'], $data['email'], $data['firstName'], $data['lastName'], $password_hash]);
 
     $userId = $db->lastInsertId();

@@ -1,0 +1,239 @@
+/* Approved Products Management Styles */
+
+/* Approved Products Section */
+.approved-product {
+    border: 2px solid #28a745;
+    background: #f8fff9;
+    transition: all 0.3s ease;
+}
+
+.approved-product:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.15);
+}
+
+.approved-product .product-badge.approved {
+    background: #28a745;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.approved-product .product-title {
+    color: #155724;
+    font-weight: 600;
+}
+
+.approved-product .product-price {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Remove/Reject Forms for Approved Products */
+.remove-form {
+    margin-top: 15px;
+    padding: 15px;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        padding: 0 15px;
+    }
+    to {
+        opacity: 1;
+        max-height: 200px;
+        padding: 15px;
+    }
+}
+
+.remove-form h5 {
+    color: #856404;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remove-form h5::before {
+    content: "⚠️";
+    font-size: 16px;
+}
+
+.remove-form textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    resize: vertical;
+    min-height: 60px;
+    font-size: 13px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.remove-form textarea:focus {
+    outline: none;
+    border-color: #856404;
+    box-shadow: 0 0 0 2px rgba(133, 100, 4, 0.1);
+}
+
+.remove-form .form-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* Remove button specific styling */
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    color: #212529;
+    transform: translateY(-1px);
+}
+
+.btn-warning:active {
+    transform: translateY(0);
+}
+
+/* Loading state for product cards */
+.approved-product.loading {
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+}
+
+.approved-product.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #28a745;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Success/Error Messages */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    max-width: 400px;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-success {
+    background-color: #28a745;
+}
+
+.notification-error {
+    background-color: #dc3545;
+}
+
+.notification-info {
+    background-color: #17a2b8;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 15px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+/* Enhanced styling for approved products grid */
+.approved-products-section {
+    margin-top: 30px;
+}
+
+.approved-products-section .content-card {
+    border-left: 4px solid #28a745;
+}
+
+.approved-products-section h3 {
+    color: #155724;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.approved-products-section h3::before {
+    content: "✅";
+    font-size: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .remove-form .form-actions {
+        flex-direction: column;
+    }
+    
+    .remove-form .form-actions button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}

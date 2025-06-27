@@ -19,10 +19,9 @@ try {
     $db = Database::getInstance();
     $cart = new Cart($db);
     
-    switch ($action) {
-        case 'add':
+    switch ($action) {        case 'add':
             $product_id = (int)($_POST['product_id'] ?? 0);
-            $quantity = (int)($_POST['quantity'] ?? 1);
+            $quantity = 1; // Always 1 for digital products
             
             if ($product_id <= 0) {
                 echo json_encode(['success' => false, 'message' => 'Invalid product ID']);
@@ -62,8 +61,7 @@ try {
                 echo json_encode(['success' => false, 'message' => 'Failed to remove item from cart']);
             }
             break;
-            
-        case 'update':
+              case 'update':
             $product_id = (int)($_POST['product_id'] ?? 0);
             $quantity = (int)($_POST['quantity'] ?? 1);
             
@@ -72,6 +70,7 @@ try {
                 exit;
             }
             
+            // For digital products: quantity 0 = remove, any other value = keep
             if ($cart->updateQuantity($user_id, $product_id, $quantity)) {
                 $cart_count = $cart->getCartCount($user_id);
                 $cart_total = $cart->getCartTotal($user_id);
