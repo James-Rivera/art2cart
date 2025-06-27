@@ -60,7 +60,7 @@ If you want to use a custom local domain (like `art2cart.local`):
 
 ---
 
-## How the Codebase Works (For Our Professor)
+## How the Codebase Works
 
 **Art2Cart** is a digital marketplace for buying and selling digital art and assets. Here’s how it’s structured and works:
 
